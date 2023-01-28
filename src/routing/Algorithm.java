@@ -1,4 +1,4 @@
-package src;
+package src.routing;
 
 public class Algorithm {
     
