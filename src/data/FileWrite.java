@@ -2,7 +2,7 @@ package src.data;
 
 import java.io.*;
 
-public class FileWrite {
+public class FileRW {
 
     private String fName = "map.txt";
     private String directory = System.getProperty("user.home");
@@ -17,7 +17,8 @@ public class FileWrite {
             fw.write(fContent);
             fw.close();
             return fContent;
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             return null;
         }
     }
