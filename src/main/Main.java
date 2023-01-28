@@ -4,11 +4,13 @@ import src.data.Map;
 
 public class Main {
 
-    private Map activeMap;
+    private static Map activeMap;
 
     public static void main(String[] args) {
-        while (true) {
-
-        }
+        //init the graphics
     }
-}
+
+    private void swapMap(Map map) {
+        activeMap = map;
+    }
+}   

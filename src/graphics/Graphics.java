@@ -1,4 +1,4 @@
-package src.routing;
+package src.graphics;
 
 import javax.swing.*;
 import java.awt.*;
