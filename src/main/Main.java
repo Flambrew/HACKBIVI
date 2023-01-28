@@ -1,6 +1,6 @@
 package src.main;
 
-import src.data.Map;
+import src.routing.Map;
 
 public class Main {
 
@@ -10,7 +10,11 @@ public class Main {
         //init the graphics
     }
 
-    private void swapMap(Map map) {
+    private static void swapMap(Map map) {
         activeMap = map;
+    }
+
+    public static Map getActiveMap() {
+        return activeMap;
     }
 }   
