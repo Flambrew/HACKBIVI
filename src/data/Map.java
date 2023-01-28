@@ -32,12 +32,25 @@ public class Map {
         return locations.indexOf(loc) < 0 ? null : locations.get(locations.indexOf(loc));
     }
 
+    /**
+     * add a new connection to the map
+     * 
+     * @param a location a
+     * @param b location b
+     * @return whether the connection could be added
+     */
     public boolean addConnection(Location a, Location b) {
-        int go = 0;
+        if (a.overrides(b))
+            return false;
+        int at = 0; bt = 0;
         for (Location location : locations) {
-            if (a.overrides(b))
+            if (location.overrides(a))
+                at++;
+            if (location.overrides(b))
+                bt++;
         }
         connections.add(new Connection(a, b))
+        return true
     }
 
 }
