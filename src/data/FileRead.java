@@ -21,9 +21,4 @@ public class FileRead {
         catch (FileNotFoundException e) {} 
         catch (IOException e) {}
     }
-
-    public void setRead(String newRead) {
-        transReads() = newRead;
-    }
-
 }
