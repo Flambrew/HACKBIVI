@@ -3,28 +3,27 @@ import java.io.*;
 
 public class FileRead {
 
-    public File
+    private String fName = "map.txt";
+    private String directory = System.getProperty("user.home");
+    private String absolutePath = directory + File.separator + fName;
 
-    FileWriter(File file);
+    public void transReads() {
 
-    public static void main(String args[]) throws IOException {
-        File file = new File("Map.txt");
+        try {
 
-        file.createNewFile();
-
-        FileWriter writer = new FileWriter(file);
-
-        writer.write("hwevfwqlfvjqwkfviwgfwiqgfi");
-        writer.flush();
-        writer.close();
-
-        FileReader fr = new FileReader(file);
-        char[] a = new char[50];
-        fr.read(a);
-
-        for (char c : a)
-                System.out.print(c);
-        fr.close();
-
+            FileReader fr = new FileReader(absolutePath);
+            int ch = fr.read();
+            while(ch != -1) {
+                System.out.print((char)ch);
+                fr.close();
+            }
+        } 
+        catch (FileNotFoundException e) {} 
+        catch (IOException e) {}
     }
+
+    public void setRead(String newRead) {
+        transReads() = newRead;
+    }
+
 }
