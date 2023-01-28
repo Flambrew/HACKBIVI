@@ -16,4 +16,8 @@ public class Location {
         this.POSX = x;
         this.POSY = y;   
     }
+
+    public boolean match(Location other) {
+        return this.POSX == other.POSX && this.POSY == other.POSY;
+    }
 }
