@@ -12,7 +12,11 @@ public class Map {
     }
 
     public void addLocation(Location loc) {
+        locations.add(loc);
+    }
 
+    public void addConnection(Location loc) {
+        locations.add(loc);
     }
 
 }
