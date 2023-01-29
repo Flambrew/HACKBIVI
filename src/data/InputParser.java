@@ -167,9 +167,11 @@ public class InputParser {
     }
 
     public static void runMakeMap(String name, boolean verbose, boolean set) {
-        FileRW.transWrites(name);
 
-        
+        FileRW.transWrites(name);
+        if (set)
+            FileRW.setActiveFile(name);
+
         if (verbose) 
             if (set)
                 Graphics.log("Map created: %s, set as active map", name);
