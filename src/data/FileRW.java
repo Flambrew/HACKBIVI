@@ -67,7 +67,13 @@ public class FileRW {
     }
 
     public static void transKill(String name) {
+        File death = new File(name + ".txt");
 
+        if (death.delete()) { 
+            System.out.println("Deleted the file: " + death.getName());
+        } else {
+            System.out.println("Failed to delete the file.");
+        }  
     }
 
     public static void transSummaries() {
