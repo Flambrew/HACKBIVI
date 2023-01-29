@@ -21,12 +21,14 @@ public class Graphics extends JFrame {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-
+        
         textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         JScrollPane scrollPane = new JScrollPane(textArea);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
+        textArea.setBackground(Color.DARK_GRAY);
+        textArea.setForeground(Color.WHITE);
 
         // info button
         JPanel buttonPanel = new JPanel();
@@ -79,34 +81,29 @@ public class Graphics extends JFrame {
         add(mainPanel);
 
     }
-    
-
-
-
-
-
 
     public static void info() {
         JFrame infoBox = new JFrame("INFO");
         infoBox.setSize(960, 550);
         infoBox.setLocation(0, 300);
-        infoBox.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        infoBox.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BorderLayout());
+        infoBox.add(infoPanel);
+
+        JTextArea textAreaInfo = new JTextArea();
+        textAreaInfo.setEditable(false);
+        textAreaInfo.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        JScrollPane scrollPane = new JScrollPane(textAreaInfo);
+        infoPanel.add(scrollPane, BorderLayout.CENTER);
+        textAreaInfo.setBackground(Color.DARK_GRAY);
+        textAreaInfo.setForeground(Color.WHITE);
+        textAreaInfo.append("Hello. I want to go to sleep. My name is john, clemons. I live on 4956 Albacurque new mexico...." + "\n");
+
         infoBox.setVisible(true);
 
     }
-
-
-
-
-
-
-
-
-
-
 
     public static void log(String act, Object... args) {
         int lines = textArea.getLineCount();
