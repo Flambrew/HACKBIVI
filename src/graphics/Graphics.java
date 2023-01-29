@@ -11,7 +11,7 @@ public class Graphics extends JFrame {
 
     private static JTextArea textArea;
     private JTextField inputField;
-    private int linesToKeep = 30;
+    private static int linesToKeep = 30;
 
 
     public Graphics() {
@@ -79,6 +79,16 @@ public class Graphics extends JFrame {
 
 
     public static void log(String act, Object... args) {
+        int lines = textArea.getLineCount();
+        if (lines > linesToKeep) {
+            try {
+                int start = textArea.getLineStartOffset(0);
+                int end = textArea.getLineEndOffset(0);
+                textArea.replaceRange("", start, end);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
         String s = String.format(act, args);
         textArea.append(s + "\n");
     }
