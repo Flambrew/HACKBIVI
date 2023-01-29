@@ -4,9 +4,19 @@ import java.io.*;
 
 public class FileRW {
 
-    private String fName = "Map.txt";
-    private String directory = System.getProperty("user.home");
-    private String absolutePath = directory + File.separator + fName;
+    //private String fName = "Map.txt";
+    //private String directory = System.getProperty("user.home");
+    //private String absolutePath = directory + File.separator + fName;
+
+    private String activeFile;
+    
+    public String getActiveFile() {
+        return activeFile;
+    }
+    
+    public void setActiveFile(String activeFile) {
+        this.activeFile = activeFile;
+    }
 
     public static void transWrites(String name) {
 
