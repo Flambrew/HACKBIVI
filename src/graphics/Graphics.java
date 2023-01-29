@@ -10,7 +10,7 @@ import src.data.InputParser;
 
 public class Graphics extends JFrame {
 
-    private JTextArea textArea;
+    private static JTextArea textArea;
     private JTextField inputField;
     private int linesToKeep = 30;
 
@@ -62,7 +62,8 @@ public class Graphics extends JFrame {
     }
 
     public static void log(String act, Object... args) {
-
+        String s = String.format(act, args);
+        textArea.append(s + "\n");
     }
 
     public static void main(String[] args) {
