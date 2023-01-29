@@ -213,6 +213,9 @@ public class InputParser {
     }
 
     public static void runSet(String mapName, boolean verbose) {
+        FileRW.setActiveFile(mapName);
+        if (verbose) 
+            Graphics.log("Map set: %s", mapName);
         log("run: set map to %s, verbose: %s", mapName, verbose);
     }
 }
