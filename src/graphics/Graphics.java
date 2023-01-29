@@ -61,7 +61,7 @@ public class Graphics extends JFrame {
         add(mainPanel);
     }
 
-    public void log(String act, Object... args) {
+    public static void log(String act, Object... args) {
 
     }
 
