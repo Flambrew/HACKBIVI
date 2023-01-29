@@ -68,7 +68,7 @@ public class FileRW {
 
         String out = firstHalf + secondHalf.substring(secondHalf.indexOf("\n"));
 
-        transWrites(out);
+        transWrites(out.substring(1));
 
     }
 
