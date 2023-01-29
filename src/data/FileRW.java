@@ -19,7 +19,7 @@ public class FileRW {
         }
     }
 
-    public static void transWrites(String name) {
+    public static void initFile(String name) {
         try {
             FileWriter fw = new FileWriter(name + ".map");
             fw.close();
@@ -27,8 +27,7 @@ public class FileRW {
         }
     }
 
-    public static String transReads() {
-        StringBuilder sb = new StringBuilder();
+    public static String readActiveFile() {
         String strLine = "";
         String str_data = "";
 
@@ -45,7 +44,7 @@ public class FileRW {
         }
     }
 
-    public static void transAdds(String in, Object... args) {
+    public static void appendToActive(String in, Object... args) {
         in = String.format(in, args);
         try {
             FileWriter fw = new FileWriter(activeFile, true);
@@ -60,8 +59,8 @@ public class FileRW {
         }
     }
 
-    public static void transBGones(String in) {
-        String content = transReads();
+    public static void cutFromFile(String in) {
+        String content = readActiveFile();
 
         String firstHalf = content.substring(0, content.indexOf(in));
 
@@ -69,11 +68,11 @@ public class FileRW {
 
         String out = firstHalf + secondHalf.substring(secondHalf.indexOf("\n"));
 
-        transWrites(out);
+        initFile(out.substring(1));
 
     }
 
-    public static void transKill(String name) {
+    public static void deleteFile(String name) {
         File death = new File(name + ".map");
 
         if (death.delete()) {
