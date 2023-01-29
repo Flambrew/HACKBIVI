@@ -61,7 +61,9 @@ public class Graphics extends JFrame {
         add(mainPanel);
     }
 
-    //public void log(String )
+    public void log(String act, Object... args) {
+
+    }
 
     public static void main(String[] args) {
         Graphics window = new Graphics();
