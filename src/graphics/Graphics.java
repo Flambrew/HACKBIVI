@@ -16,7 +16,8 @@ public class Graphics extends JFrame {
 
     public Graphics() {
         super("Terminal Window");
-        setSize(960, 540);
+        setSize(960, 550);
+        setLocation(0, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel();
