@@ -19,19 +19,19 @@ public class InputParser {
                 if ((options = validateOptions(command, new String[] { "verbose", "set" }, "vs")) == "\0") {
                     options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                             .collect(Collectors.joining(", "));
-                    log("Options %s unrecognized.", options);
+                    Graphics.log("Options %s unrecognized.", options);
                     return;
                 }
                 command.removeIf(s -> s.matches("-.*"));
                 if (command.size() == 1)
                     runMakeMap(command.get(0), options.contains("v"), options.contains("s"));
                 else
-                    log("Command \"%s\" unrecognized.", in);
+                    Graphics.log("Command \"%s\" unrecognized.", in);
             } else if (suffix.equals("loc")) {
                 if ((options = validateOptions(command, new String[] { "verbose", "force" }, "vf")) == "\0") {
                     options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                             .collect(Collectors.joining(", "));
-                    log("Options %s unrecognized.", options);
+                    Graphics.log("Options %s unrecognized.", options);
                     return;
                 }
                 command.removeIf(s -> s.matches("-.*"));
@@ -40,16 +40,16 @@ public class InputParser {
                         runMakeLoc(command.get(0), options.contains("v"), options.contains("f"),
                                 Double.parseDouble(command.get(1)), Double.parseDouble(command.get(2)));
                     else
-                        log("Command \"%s\" unrecognized.", in);
+                        Graphics.log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    log("Command \"%s\" unrecognized.", in);
+                    Graphics.log("Command \"%s\" unrecognized.", in);
                 }
             } else if (suffix.equals("con")) {
                 if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
                     options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                             .collect(Collectors.joining(", "));
-                    log("Options %s unrecognized.", options);
+                    Graphics.log("Options %s unrecognized.", options);
                     return;
                 }
                 command.removeIf(s -> s.matches("-.*"));
@@ -57,12 +57,12 @@ public class InputParser {
                     if (command.size() == 2)
                         runMakeCon(command.get(0), command.get(1), options.contains("v"));
                     else
-                        log("Command \"%s\" unrecognized.", in);
+                        Graphics.log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
-                    log("Command \"%s\" unrecognized.", in);
+                    Graphics.log("Command \"%s\" unrecognized.", in);
                 }
             } else
-                log("Command \"%s %s\" unrecognized.", head, suffix);
+                Graphics.log("Command \"%s %s\" unrecognized.", head, suffix);
         } else if (head.equals("rm")) {
             String suffix = command.remove(0);
             if (suffix.equals("map")) {
@@ -147,10 +147,6 @@ public class InputParser {
                 .mapToObj(i -> ((Character) options.charAt(i)).toString()).collect(Collectors.joining())).chars()
                 .distinct().mapToObj(c -> ((Character) (char) c).toString()).collect(Collectors.joining());
         return dash.matches("[" + options + "]*") ? dash : "\0";
-    }
-
-    public static void log(String s, Object... args) {
-        System.out.printf(s, args);
     }
 
     public static void runMakeMap(String name, boolean verbose, boolean set) {
