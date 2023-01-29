@@ -1,6 +1,9 @@
 package src.graphics;
 
 import javax.swing.*;
+
+import src.data.InputParser;
+
 import java.awt.*;
 import java.awt.event.*;
 
