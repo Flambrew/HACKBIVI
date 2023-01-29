@@ -2,38 +2,66 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class Graphics extends JPanel {
-    
+public class Graphics extends JFrame {
+
+    private JTextArea textArea;
     private JTextField inputField;
-    private JButton submitButton;
+    private int linesToKeep = 30;
 
     public Graphics() {
-        setLayout(new BorderLayout());
+        super("Terminal Window");
+        setSize(960, 540);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+
+        textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        textArea.setText("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
         inputField = new JTextField();
-        submitButton = new JButton("Submit");
+        inputField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String input = inputField.getText();
+                    textArea.append(input + "\n");
+                    inputField.setText("");
 
-        add(inputField, BorderLayout.CENTER);
-        add(submitButton, BorderLayout.EAST);
+                    // send to parser
+                    InputParser.parse(input);
 
-        submitButton.addActionListener(e -> {
-            String input = inputField.getText();
-            // do something with the input
-            System.out.println("User input: " + input);
+                    int lines = textArea.getLineCount();
+                    if (lines > linesToKeep) {
+                        try {
+                            int start = textArea.getLineStartOffset(0);
+                            int end = textArea.getLineEndOffset(0);
+                            textArea.replaceRange("", start, end);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                }
+            }
         });
+        mainPanel.add(inputField, BorderLayout.SOUTH);
+
+        add(mainPanel);
     }
+
+    //public void log(String )
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Input Panel Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new Graphics());
-        frame.pack();
-        frame.setSize(300, 100);
-        frame.setVisible(true);
-    
+        Graphics window = new Graphics();
+        window.setVisible(true);
     }
-
 }
-
-
 
