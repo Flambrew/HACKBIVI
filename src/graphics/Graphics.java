@@ -61,6 +61,14 @@ public class Graphics extends JFrame {
         add(mainPanel);
     }
 
+    public static void Info() {
+        JFrame frame = new JFrame("Information Window");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setSize(960, 540);
+        frame.setVisible(true);
+    }
+
     public static void log(String act, Object... args) {
         String s = String.format(act, args);
         textArea.append(s + "\n");
@@ -71,4 +79,3 @@ public class Graphics extends JFrame {
         window.setVisible(true);
     }
 }
-
