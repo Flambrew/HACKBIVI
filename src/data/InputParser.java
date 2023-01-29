@@ -168,7 +168,14 @@ public class InputParser {
 
     public static void runMakeMap(String name, boolean verbose, boolean set) {
         FileRW.transWrites(name);
-        Graphics.log("run: create map %s, verbose %s, set active: %s", name, verbose, set);
+
+        
+        if (verbose) 
+            if (set)
+                Graphics.log("Map created: %s, set as active map", name);
+            else 
+                Graphics.log("Map created: %s", name);
+
     }
 
     public static void runMakeLoc(String name, boolean verbose, boolean force, int x, int y, String abbreviation) {
