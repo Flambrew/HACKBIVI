@@ -121,7 +121,7 @@ public class InputParser {
                 runList(options.contains("n"), options.contains("l"), options.contains("c"));
             else
                 Graphics.log("Command \"%s\" unrecognized.", in);
-        } else if (head.equals("set")) {
+        } else if (head.equals("open")) {
             if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
                 options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                         .collect(Collectors.joining(", "));
