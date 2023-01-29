@@ -10,11 +10,11 @@ public class FileRW {
 
     private static String activeFile;
     
-    public String getActiveFile() {
+    public static String getActiveFile() {
         return activeFile;
     }
     
-    public void setActiveFile(String activeFile) {
+    public static void setActiveFile(String activeFile) {
         this.activeFile = activeFile;
     }
 
