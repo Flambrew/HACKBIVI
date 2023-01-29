@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import src.graphics.Graphics;
+import src.routing.AStar;
 import src.routing.City;
 
 public class InputParser {
@@ -103,17 +104,8 @@ public class InputParser {
             } else
                 Graphics.log("Command \"%s %s\" unrecognized.", head, suffix);
         } else if (head.equals("find")) {
-            if ((options = validateOptions(command,
-                    new String[] { "ignore-order", "return-home" }, "ih")) == "\0") {
-                options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
-                        .collect(Collectors.joining(", "));
-                Graphics.log("Options %s unrecognized.", options);
-                return;
-            }
-            command.removeIf(s -> s.matches("-.*"));
-            if (command.size() >= 3)
-                runFind(command.remove(0), command.remove(1), options.contains("i"), options.contains("h"),
-                        command.toArray(String[]::new));
+            if (command.size() == 3)
+                runFind(command.remove(0), command.remove(0), command.remove(0));
             else
                 Graphics.log("Command \"%s\" unrecognized.", in);
         } else if (head.equals("list")) {
@@ -219,18 +211,34 @@ public class InputParser {
             Graphics.log("(From map: %s) Connection removed: %s-%s", FileRW.getActiveFile(), locationA, locationB);
     }
 
-    public static void runFind(String mapName, String start, boolean ignore, boolean home,
-            String... destinations) {
+    public static void runFind(String mapName, String start, String destination) {
         String file = FileRW.transReads();
         ArrayList<City> cities = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
 
-        for (String str : file.split("\n")) {
+        // make the locations
+        for (String str : file.split("\n"))
             if (str.charAt(0) == '$') {
-                cities.add(new City(mapName));
+                cities.add(new City(str.substring(1, str.indexOf(":")),
+                        Double.parseDouble(str.substring(str.indexOf(":") + 1, str.indexOf(","))),
+                        Double.parseDouble(str.substring(str.indexOf(",") + 1))));
+                names.add(str.substring(1, str.indexOf(":")));
             }
-        }
 
+        // make the connections
+        for (String str : file.split("\n"))
+            if (str.charAt(0) == '#') {
+                City loca = cities.get(names.indexOf(str.substring(str.indexOf("#") + 1, str.indexOf(":"))));
+                City locb = cities.get(names.indexOf(str.substring(str.indexOf(":") + 1)));
+                loca.addAdjacentCity(locb, (int) Math
+                        .sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)));
+                locb.addAdjacentCity(loca, (int) Math
+                        .sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)));
+            }
 
+        AStar.calculateShortestPath(cities.get(names.indexOf(start)));
+
+        Graphics.log("%s", AStar.path(cities.get(names.indexOf(destination))));
 
     }
 

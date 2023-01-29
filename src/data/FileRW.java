@@ -1,8 +1,6 @@
 package src.data;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class FileRW {
 
@@ -47,14 +45,6 @@ public class FileRW {
             return null;
         }
     }
-
-    /*
-     * try {
-     * return Files.readString(Paths.get(activeFile));
-     * } catch (IOException e) {
-     * return null;
-     * }
-     */
 
     public static void transAdds(String in, Object... args) {
         in = String.format(in, args);

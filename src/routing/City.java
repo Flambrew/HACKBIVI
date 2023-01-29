@@ -7,7 +7,7 @@ import java.util.List;
 public class City implements Comparable<City> {
 
     private final String name;
-    //private final double x, y;
+    private final double x, y;
     private Integer distance = Integer.MAX_VALUE;
     private List<City> shortestPath = new LinkedList<>();
     private java.util.Map<City, Integer> adjacentNodes = new HashMap<>();
@@ -16,8 +16,22 @@ public class City implements Comparable<City> {
         adjacentNodes.put(node, weight);
     }
 
-    public City(String name) {
+    public City(String name, double x, double y) {
         this.name = name;
+        this.x = x;
+        this.y = y;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
     }
 
     @Override
