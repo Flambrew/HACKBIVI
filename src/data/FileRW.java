@@ -38,11 +38,11 @@ public class FileRW {
         try {
             BufferedReader br = new BufferedReader(new FileReader(activeFile));
             while (strLine != null) {
-                str_data += strLine + "/n";
                 strLine = br.readLine();
+                str_data += strLine + "\n";
             }
             br.close();
-            return str_data; 
+            return str_data.substring(0, str_data.length() - 2); 
         } catch (IOException e) {
             return null;
         }
