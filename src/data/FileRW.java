@@ -28,7 +28,6 @@ public class FileRW {
     }
 
     public static String transReads() {
-        StringBuilder sb = new StringBuilder();
         String strLine = "";
         String str_data = "";
 
