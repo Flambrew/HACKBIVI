@@ -1,42 +1,35 @@
 package src.routing;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class AStar {
-    public static void Astar(Map map, Location start, Location end) {
-        int[] dists = new int[map.getNames().size()]
-        for (int i : dists) 
-            i = Integer.MAX_VALUE;
-
-        
-
-    }
-
-
     public void calculateShortestPath(Node source) {
         source.setDistance(0);
-        Set<Node> settlesNodes = new HashSet<>();
+        Set<Node> settledNodes = new HashSet<>();
         Queue<Node> unsettledNodes = new PriorityQueue<>(Collections.singleton(source));
         while (!unsettledNodes.isEmpty()) {
             Node currentNode = unsettledNodes.poll();
-            currentNode.getAdjacentNodes().entrySet().stream().filter(entry -> !settledNodes.contains(entry.getKey())).forEach(entry -> {
-                evaluateDistanceAndPath
-            });
+            currentNode.getAdjacentNodes().entrySet().stream().filter(entry -> !settledNodes.contains(entry.getKey()))
+                    .forEach(entry -> {
+                        evaluateDistanceAndPath(entry.getKey(), entry.getValue(), currentNode);
+                        unsettledNodes.add(entry.getKey());
+                    });
+            settledNodes.add(currentNode);
         }
     }
 
-
-
-
-
-
-
-    public double findPotential(double x, double y, double ex, double ey) {
-        return Math.sqrt(Math.pow(x - ex, 2) + Math.pow(y - ey, 2));
+    private void evaluateDistanceAndPath(Node adjacentNode, Integer edgeWeight, Node sourceNode) {
+        Integer newDistance = sourceNode.getDistance() + edgeWeight;
+        if (newDistance < adjacentNode.getDistance()) {
+            adjacentNode.setDistance(newDistance);
+            adjacentNode.setShortestPath(Arrays.asList(
+                    Stream.concat(sourceNode.getShortestPath().stream(), Stream.of(sourceNode)).toArray(Node[]::new)));
+        }
     }
 }
