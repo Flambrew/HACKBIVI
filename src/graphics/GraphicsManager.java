@@ -7,13 +7,26 @@ import src.data.InputParser;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Graphics extends JFrame {
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+public class GraphicsManager extends JFrame {
 
     private static JTextArea textArea;
     private JTextField inputField;
     private static int linesToKeep = 30;
+    private static boolean infoOpen = false;
+    private static JFrame infoBox;
 
-    public Graphics() {
+    private static WindowListener listener = new WindowAdapter() {
+        public void windowClosing(WindowEvent evt) {
+           infoBox = (JFrame) evt.getSource();
+           infoOpen = false;
+        }
+    };
+
+    public GraphicsManager() {
         super("Terminal Window");
         setSize(960, 550);
         setLocation(0, 300);
@@ -38,12 +51,23 @@ public class Graphics extends JFrame {
         infoButton.setPreferredSize(new Dimension(60, 30));
         infoButton.setMinimumSize(new Dimension(60, 30));
         infoButton.setMaximumSize(new Dimension(60, 30));
+        infoButton.setBackground(Color.LIGHT_GRAY);
+        infoButton.setForeground(Color.BLACK);
         buttonPanel.add(infoButton);
         buttonPanel.add(Box.createVerticalGlue());
         add(buttonPanel, BorderLayout.EAST);
         infoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              info();
+                if (infoBox == null) {
+                    info();
+                    infoOpen = true;
+                } else if (infoOpen) {
+                    infoBox.setVisible(false);
+                    infoOpen = false;
+                } else {
+                    info();
+                    infoOpen = true;
+                }
             }
           });
         
@@ -81,11 +105,13 @@ public class Graphics extends JFrame {
         add(mainPanel);
 
     }
+    
 
     public static void info() {
-        JFrame infoBox = new JFrame("INFO");
+        
+        infoBox = new JFrame("INFO");
         infoBox.setSize(960, 550);
-        infoBox.setLocation(0, 300);
+        infoBox.setLocation(950, 300);
         infoBox.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel infoPanel = new JPanel();
@@ -101,8 +127,8 @@ public class Graphics extends JFrame {
         textAreaInfo.setForeground(Color.WHITE);
         textAreaInfo.append("Hello. I want to go to sleep. My name is john, clemons. I live on 4956 Albacurque new mexico...." + "\n");
 
+        infoBox.addWindowListener(listener); 
         infoBox.setVisible(true);
-
     }
 
     public static void log(String act, Object... args) {
@@ -121,7 +147,7 @@ public class Graphics extends JFrame {
     }
 
     public static void main(String[] args) {
-        Graphics window = new Graphics();
+        GraphicsManager window = new GraphicsManager();
         window.setVisible(true);
         //info();
     }
