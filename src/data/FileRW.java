@@ -41,14 +41,12 @@ public class FileRW {
 
     public static void transAdds(String in, Object... args) {
         in = String.format(in, args);
-        // TODO tack . in . onto the file
         try {
             FileWriter fw = new FileWriter(activeFile, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
             {
-
-                pw.println("check this out");
+                pw.println(in);
             }
             pw.close();
         } catch (IOException e) {
@@ -56,41 +54,17 @@ public class FileRW {
         }
     }
 
-    public static void transBGones() throws IOException {
+    public static void transBGones(String in) {
+        String content = transReads();
 
-        PrintWriter pw = new PrintWriter("newMap.txt");
-        BufferedReader br1 = new BufferedReader(new FileReader("Map.txt")); // i used two bufferedreaders for this
+        String firstHalf = content.substring(0, content.indexOf(in));
 
-        String l1 = br1.readLine(); // the l's mean lines
+        String secondHalf = content.substring(content.indexOf(in));
 
-        while (l1 != null) {
-            boolean flag = false;
+        String out = firstHalf + secondHalf.substring(secondHalf.indexOf("\n")) ;
 
-            BufferedReader br2 = new BufferedReader(new FileReader("delete.txt"));
-
-            String l2 = br2.readLine();
-
-            while (l2 != null) {
-
-                if (l1.equals(l2)) {
-                    flag = true;
-                    break;
-                }
-                l2 = br2.readLine();
-                br2.close();
-            }
-
-            if (!flag)
-                pw.println(l1);
-            l1 = br1.readLine();
-        }
-
-        pw.flush();
-
-        br1.close();
-        pw.close();
-
-        System.out.println("File operation performed successfully");
+        transWrites(out);
+        
     }
 
     public static void transSummaries() {
