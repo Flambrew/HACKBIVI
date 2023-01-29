@@ -9,12 +9,12 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class AStar {
-    public void calculateShortestPath(Node source) {
+    public void calculateShortestPath(City source) {
         source.setDistance(0);
-        Set<Node> settledNodes = new HashSet<>();
-        Queue<Node> unsettledNodes = new PriorityQueue<>(Collections.singleton(source));
+        Set<City> settledNodes = new HashSet<>();
+        Queue<City> unsettledNodes = new PriorityQueue<>(Collections.singleton(source));
         while (!unsettledNodes.isEmpty()) {
-            Node currentNode = unsettledNodes.poll();
+            City currentNode = unsettledNodes.poll();
             currentNode.getAdjacentNodes().entrySet().stream().filter(entry -> !settledNodes.contains(entry.getKey()))
                     .forEach(entry -> {
                         evaluateDistanceAndPath(entry.getKey(), entry.getValue(), currentNode);
@@ -24,12 +24,12 @@ public class AStar {
         }
     }
 
-    private void evaluateDistanceAndPath(Node adjacentNode, Integer edgeWeight, Node sourceNode) {
+    private void evaluateDistanceAndPath(City adjacentNode, Integer edgeWeight, City sourceNode) {
         Integer newDistance = sourceNode.getDistance() + edgeWeight;
         if (newDistance < adjacentNode.getDistance()) {
             adjacentNode.setDistance(newDistance);
             adjacentNode.setShortestPath(Arrays.asList(
-                    Stream.concat(sourceNode.getShortestPath().stream(), Stream.of(sourceNode)).toArray(Node[]::new)));
+                    Stream.concat(sourceNode.getShortestPath().stream(), Stream.of(sourceNode)).toArray(City[]::new)));
         }
     }
 }

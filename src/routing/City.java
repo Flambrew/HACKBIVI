@@ -4,21 +4,23 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Node implements Comparable<Node> {
+public class City implements Comparable<City> {
 
     private final String name;
     private Integer distance = Integer.MAX_VALUE;
-    private List<Node> shortestPath = new LinkedList<>();
-    private java.util.Map<Node, Integer> adjacentNodes = new HashMap<>();
+    private List<City> shortestPath = new LinkedList<>();
+    private java.util.Map<City, Integer> adjacentNodes = new HashMap<>();
 
-    public Node(String name)
-
-    public void addAdjacentnode(Node node, int weight) {
+    public void addAdjacentCity(City node, int weight) {
         adjacentNodes.put(node, weight);
     }
 
+    public City(String name) {
+        this.name = name;
+    }
+
     @Override
-    public int compareTo(Node node) {
+    public int compareTo(City node) {
         return Integer.compare(this.distance, node.getDistance());
     }
 
@@ -30,15 +32,15 @@ public class Node implements Comparable<Node> {
         this.distance = distance;
     }
 
-    public void setShortestPath(List<Node> shortestPath) {
+    public void setShortestPath(List<City> shortestPath) {
         this.shortestPath = shortestPath;
     }
-    
-    public List<Node> getShortestPath() {
+
+    public List<City> getShortestPath() {
         return shortestPath;
     }
 
-    public java.util.Map<Node, Integer> getAdjacentNodes() {
+    public java.util.Map<City, Integer> getAdjacentNodes() {
         return adjacentNodes;
     }
 }

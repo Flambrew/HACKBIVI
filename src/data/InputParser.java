@@ -146,9 +146,7 @@ public class InputParser {
                 runSet(command.get(0), options.contains("v"));
             else
                 log("Command \"%s\" unrecognized.", in);
-        } else if (head.equals("graph"))
-            runGraph();
-        else
+        } else
             log("Command \"%s\" unrecognized.", head);
     }
 
@@ -156,8 +154,8 @@ public class InputParser {
         String dash = command.stream().filter(s -> s.matches("-[^-].*")).map(s -> s.substring(1))
                 .collect(Collectors.joining());
         String[] full = command.stream().filter(s -> s.matches("--.*")).map(s -> s.substring(2)).toArray(String[]::new);
-        dash = IntStream.range(0, full.length).filter(i -> Arrays.asList(fullOptions).contains(full[i]))
-                .mapToObj(i -> ((Character) options.charAt(i)).toString()).collect(Collectors.joining()).chars()
+        dash = (dash + IntStream.range(0, full.length).filter(i -> Arrays.asList(fullOptions).contains(full[i]))
+                .mapToObj(i -> ((Character) options.charAt(i)).toString()).collect(Collectors.joining())).chars()
                 .distinct().mapToObj(c -> ((Character) (char) c).toString()).collect(Collectors.joining());
         return dash.matches("[" + options + "]*") ? dash : "\0";
     }
@@ -204,9 +202,5 @@ public class InputParser {
 
     public static void runSet(String mapName, boolean verbose) {
         log("run: set map to %s, verbose: %s", mapName, verbose);
-    }
-
-    public static void runGraph() {
-        log("run: display graph");
     }
 }
