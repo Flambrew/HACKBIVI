@@ -10,6 +10,8 @@ import java.awt.event.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyAdapter;
 
 public class GraphicsManager extends JFrame {
 
@@ -44,9 +46,6 @@ public class GraphicsManager extends JFrame {
         textArea.setBackground(new Color(32, 37, 49));
         textArea.setForeground(Color.WHITE);
 
-        
-        getContentPane().setBackground(Color.BLUE);
-        setBackground(Color.BLUE);
 
         // info button
         JPanel buttonPanel = new JPanel();
@@ -104,10 +103,9 @@ public class GraphicsManager extends JFrame {
                     }
 
                 }
-            }
-        });
-        mainPanel.add(inputField, BorderLayout.SOUTH);
 
+        }});
+        mainPanel.add(inputField, BorderLayout.SOUTH);
         add(mainPanel);
 
     }
