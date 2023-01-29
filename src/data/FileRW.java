@@ -66,7 +66,7 @@ public class FileRW {
         
     }
 
-    public static void transKills(String name) {
+    public static void transKill(String name) {
 
     }
 
