@@ -145,6 +145,8 @@ public class InputParser {
             Graphics.log("Command \"%s\" unrecognized.", head);
     }
 
+    // ignore how atrocious this method looks, i just learned the basics of lambdas
+    // and im practicing their use, im not making this the norm
     private static String validateOptions(ArrayList<String> command, String[] fullOptions, String options) {
         String dash = command.stream().filter(s -> s.matches("-[^-].*")).map(s -> s.substring(1))
                 .collect(Collectors.joining());
@@ -201,19 +203,20 @@ public class InputParser {
 
     public static void runRMmap(String name, boolean verbose) {
         FileRW.transBGones(name);
-        log("run: delete map %s, verbose %s", name, verbose);
+        if (verbose)
+            Graphics.log("Map removed: %s", name);
     }
 
-    public static void runRMloc(String name, boolean verbose) { // "$" + name
-        name = "$" + name;
-        FileRW.transBGones(name);
-        log("run: delete location %s, verbose %s", name, verbose);
+    public static void runRMloc(String name, boolean verbose) { 
+        FileRW.transBGones("$" + name);
+        if (verbose)
+            Graphics.log("(From map: %s) Location removed: %s", FileRW.getActiveFile(), name);
     }
 
-    public static void runRMcon(String locationA, String locationB, boolean verbose) { // "#" + loca + "-" + locb
-        String name = "#" + locationA + "-" + locationB;
-        FileRW.transBGones(name);
-        log("run: delete connection %s-%s, verbose %s", locationA, locationB, verbose);
+    public static void runRMcon(String locationA, String locationB, boolean verbose) {
+        FileRW.transBGones("#" + locationA + "-" + locationB);
+        if (verbose)
+            Graphics.log("(From map: %s) Connection removed: %s-%s", FileRW.getActiveFile(), locationA, locationB);
     }
 
     public static void runFind(String mapName, String start, boolean ignore, boolean home, boolean raw,
@@ -231,6 +234,5 @@ public class InputParser {
         FileRW.setActiveFile(mapName);
         if (verbose)
             Graphics.log("Map set: %s", mapName);
-        log("run: set map to %s, verbose: %s", mapName, verbose);
     }
 }

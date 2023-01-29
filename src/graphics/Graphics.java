@@ -11,7 +11,8 @@ public class Graphics extends JFrame {
 
     private static JTextArea textArea;
     private JTextField inputField;
-    private int linesToKeep = 30;
+    private static int linesToKeep = 30;
+
 
     public Graphics() {
         super("Terminal Window");
@@ -59,17 +60,35 @@ public class Graphics extends JFrame {
         mainPanel.add(inputField, BorderLayout.SOUTH);
 
         add(mainPanel);
-    }
+        //info();
 
-    public static void Info() {
-        JFrame frame = new JFrame("Information Window");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.pack();
-        frame.setSize(960, 540);
-        frame.setVisible(true);
     }
+    
+    /*
+    public static void info() {
+        JFrame infoBox = new JFrame("INFO");
+        infoBox.setSize(960, 550);
+        infoBox.setLocation(0, 300);
+        infoBox.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BorderLayout());
+
+    }
+    */
+
 
     public static void log(String act, Object... args) {
+        int lines = textArea.getLineCount();
+        if (lines > linesToKeep) {
+            try {
+                int start = textArea.getLineStartOffset(0);
+                int end = textArea.getLineEndOffset(0);
+                textArea.replaceRange("", start, end);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
         String s = String.format(act, args);
         textArea.append(s + "\n");
     }
@@ -77,5 +96,7 @@ public class Graphics extends JFrame {
     public static void main(String[] args) {
         Graphics window = new Graphics();
         window.setVisible(true);
+        //info();
     }
+    
 }
