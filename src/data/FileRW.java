@@ -2,7 +2,6 @@ package src.data;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FileRW {
@@ -65,6 +64,10 @@ public class FileRW {
 
         transWrites(out);
         
+    }
+
+    public static void transKills(String name) {
+
     }
 
     public static void transSummaries() {
