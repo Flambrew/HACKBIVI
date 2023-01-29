@@ -34,9 +34,9 @@ public class InputParser {
                 }
                 command.removeIf(s -> s.matches("-.*"));
                 try {
-                    if (command.size() == 4)
+                    if (command.size() == 3)
                         runMakeLoc(command.get(0), options.contains("v"), options.contains("f"),
-                                command.get(0), Integer.parseInt(command.get(2)), Integer.parseInt(command.get(3)));
+                                Double.parseDouble(command.get(2)), Double.parseDouble(command.get(3)));
                     else
                         log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
@@ -52,7 +52,8 @@ public class InputParser {
                 command.removeIf(s -> s.matches("-.*"));
                 try {
                     if (command.size() == 3)
-                        runMakeCon(command.get(0), command.get(1), command.get(2), options.contains("v"), options.contains("s"));
+                        runMakeCon(command.get(0), command.get(1), command.get(2), options.contains("v"),
+                                options.contains("s"));
                     else
                         log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
@@ -110,7 +111,8 @@ public class InputParser {
             }
             command.removeIf(s -> s.matches("-.*"));
             if (command.size() >= 3)
-                runFind(command.remove(0), command.remove(1), options.contains("i"), options.contains("h"), options.contains("r"),
+                runFind(command.remove(0), command.remove(1), options.contains("i"), options.contains("h"),
+                        options.contains("r"),
                         command.toArray(String[]::new));
             else
                 log("Command \"%s\" unrecognized.", in);
@@ -159,22 +161,29 @@ public class InputParser {
     }
 
     public static void runMakeMap(String name, boolean verbose, boolean set) {
-
         FileRW.transWrites(name);
         if (set)
             FileRW.setActiveFile(name);
-
         if (verbose)
             if (set)
                 Graphics.log("Map created: %s, set as active map", name);
             else
                 Graphics.log("Map created: %s", name);
-
     }
 
-    public static void runMakeLoc(String name, boolean verbose, boolean force, String abbreviation, int x, int y) {
-        log("run: create location %s%s at (%d, %d), verbose: %s, force: %s", name,
-                abbreviation == null ? "" : " " + abbreviation, x, y, verbose, force);
+    public static void runMakeLoc(String name, boolean verbose, boolean force, double x, double y) {
+        String file = FileRW.transReads();
+        if (file.matches("[^]*\\$" + name.toLowerCase() + ":[0-9.]+[0-9.]+\n[^]*")) {
+            if (force) {
+                FileRW.transBGones("$" + name.toLowerCase());
+                FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
+                Graphics.log("(Overwrite) Created new location %s at (%.2f, %.2f)", name, x, y);
+            } else {
+                Graphics.log("Command: \"make loc\" failed (could not overwrite existing location)");
+            }
+        } else
+            FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
+            Graphics.log("Created new location %s at (%.2f, %.2f)", name, x, y);
     }
 
     public static void runMakeCon(String mapName, String locationA, String locationB, boolean verbose, boolean force) {
@@ -193,7 +202,8 @@ public class InputParser {
         log("run: delete connection %s-%s, verbose %s", locationA, locationB, verbose);
     }
 
-    public static void runFind(String mapName, String start, boolean ignore, boolean home, boolean raw, String... destinations) {
+    public static void runFind(String mapName, String start, boolean ignore, boolean home, boolean raw,
+            String... destinations) {
         log("run: find shortest route from %s, ignore order: %s, return home %s, raw: %s, destinations: %s",
                 start, ignore, home, raw, Arrays.deepToString(destinations));
     }
