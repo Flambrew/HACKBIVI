@@ -39,7 +39,11 @@ public class Graphics extends JFrame {
         buttonPanel.add(infoButton);
         buttonPanel.add(Box.createVerticalGlue());
         add(buttonPanel, BorderLayout.EAST);
-        
+        infoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              info();
+            }
+          });
         
 
         textArea.setText("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -73,7 +77,6 @@ public class Graphics extends JFrame {
         mainPanel.add(inputField, BorderLayout.SOUTH);
 
         add(mainPanel);
-        info();
 
     }
     
