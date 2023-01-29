@@ -1,4 +1,4 @@
-package src;
+package src.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -146,9 +146,7 @@ public class InputParser {
                 runSet(command.get(0), options.contains("v"));
             else
                 log("Command \"%s\" unrecognized.", in);
-        } else if (head.equals("graph"))
-            runGraph();
-        else
+        } else
             log("Command \"%s\" unrecognized.", head);
     }
 
@@ -204,9 +202,5 @@ public class InputParser {
 
     public static void runSet(String mapName, boolean verbose) {
         log("run: set map to %s, verbose: %s", mapName, verbose);
-    }
-
-    public static void runGraph() {
-        log("run: display graph");
     }
 }
