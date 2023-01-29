@@ -11,7 +11,7 @@ public class FileRW {
     public String transWrites() {
 
         try {
-            FileWriter fw = new FileWriter(absolutePath);
+            FileWriter fw = new FileWriter("yoMama.txt");
             String fContent = "guh";
             fw.write(fContent);
             fw.close();
@@ -21,22 +21,22 @@ public class FileRW {
         }
     }
 
-    public void transRead() {
+    public void transReads() {
         
         try {
             
-            FileReader fr = new FileReader(absolutePath);
+            FileReader fr = new FileReader("Map.txt");
             int ch = fr.read();
-            while(ch != -1) {
+            if(ch != -1) {
                 System.out.print((char)ch);
-                fr.close();
             }
+            fr.close();
         } 
         catch (FileNotFoundException e) {} 
         catch (IOException e) {} 
     }
 
-    public void transAdd() {
+    public void transAdds() {
         try {
             FileWriter fw = new FileWriter("Map.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -51,7 +51,7 @@ public class FileRW {
         }
     }
 
-    public void transBGone() throws IOException {
+    public void transBGones() throws IOException {
 
         PrintWriter pw = new PrintWriter("newMap.txt");
         BufferedReader br1 = new BufferedReader(new FileReader("Map.txt")); //i used two bufferedreaders for this
@@ -89,14 +89,14 @@ public class FileRW {
         System.out.println("File operation performed successfully");
     }
 
-    public void transSummary() {
+    public void transSummaries() {
         String l;
         try {
             BufferedReader br = new BufferedReader(new FileReader("Map.txt"));
             while ((l = br.readLine()) != null) {
                 System.out.println(l);
-                br.close();
             }
+            br.close();
         } catch (IOException e) {}
      }
 }
