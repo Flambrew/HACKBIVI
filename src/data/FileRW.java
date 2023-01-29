@@ -1,6 +1,9 @@
 package src.data;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileRW {
 
@@ -28,18 +31,11 @@ public class FileRW {
         }
     }
 
-    public static void transReads() {
-
+    public static String transReads() {
         try {
-
-            FileReader fr = new FileReader("Map.txt");
-            int ch = fr.read();
-            if (ch != -1) {
-                System.out.print((char) ch);
-            }
-            fr.close();
-        } catch (FileNotFoundException e) {
+            return Files.readString(Paths.get(activeFile));
         } catch (IOException e) {
+            return null;
         }
     }
 
