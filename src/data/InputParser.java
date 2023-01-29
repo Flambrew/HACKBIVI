@@ -150,7 +150,7 @@ public class InputParser {
     }
 
     public static void runMakeMap(String name, boolean verbose, boolean set) {
-        FileRW.transWrites(name);
+        FileRW.initFile(name);
         if (set)
             FileRW.setActiveFile(name);
         if (verbose)
@@ -163,55 +163,55 @@ public class InputParser {
     public static void runMakeLoc(String name, boolean verbose, boolean force, double x, double y) {
         x *= 1000;
         y *= 1000;
-        String file = FileRW.transReads();
+        String file = FileRW.readActiveFile();
         if (file.matches(".*\\$" + name.toLowerCase() + ":[0-9.]+,[0-9.]+\\n.*")) {
             if (force) {
-                FileRW.transBGones("$" + name.toLowerCase());
-                FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
+                FileRW.cutFromFile("$" + name.toLowerCase());
+                FileRW.appendToActive("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
                 if (verbose)
                     GraphicsManager.log("(Overwrite) Created new location %s at (%.2f, %.2f)", name, x, y);
             } else {
                 GraphicsManager.log("Command: \"make loc\" failed (could not overwrite existing location)");
             }
         } else {
-            FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
+            FileRW.appendToActive("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
             if (verbose)
                 GraphicsManager.log("Created new location %s at (%.2f, %.2f)", name, x, y);
         }
     }
 
     public static void runMakeCon(String locationA, String locationB, boolean verbose) {
-        String file = FileRW.transReads();
+        String file = FileRW.readActiveFile();
         if (file.matches(".*\\$" + locationA.toLowerCase() + ":" + locationB.toLowerCase() + "\n.*")) {
             GraphicsManager.log("Connection Exists");
         } else {
-            FileRW.transAdds("#%s:%s", locationA.toLowerCase(), locationB.toLowerCase());
+            FileRW.appendToActive("#%s:%s", locationA.toLowerCase(), locationB.toLowerCase());
             if (verbose)
                 GraphicsManager.log("Created new connection: %s - %s", locationA, locationB);
         }
     }
 
     public static void runRMmap(String name, boolean verbose) {
-        FileRW.transKill(name);
+        FileRW.deleteFile(name);
         if (verbose)
             GraphicsManager.log("Map removed: %s", name);
     }
 
     public static void runRMloc(String name, boolean verbose) {
-        FileRW.transBGones("$" + name);
+        FileRW.cutFromFile("$" + name);
         if (verbose)
             GraphicsManager.log("(From map: %s) Location removed: %s", FileRW.getActiveFile(), name);
     }
 
     public static void runRMcon(String locationA, String locationB, boolean verbose) {
-        FileRW.transBGones("#" + locationA + "-" + locationB);
+        FileRW.cutFromFile("#" + locationA + "-" + locationB);
         if (verbose)
             GraphicsManager.log("(From map: %s) Connection removed: %s-%s", FileRW.getActiveFile(), locationA,
                     locationB);
     }
 
     public static void runFind(String mapName, String start, String destination) {
-        String file = FileRW.transReads();
+        String file = FileRW.readActiveFile();
         ArrayList<City> cities = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
 
@@ -242,7 +242,7 @@ public class InputParser {
     }
 
     public static void runList(boolean name, boolean location, boolean connection) {
-        String file = FileRW.transReads();
+        String file = FileRW.readActiveFile();
         if (name)
             file = FileRW.getActiveFile() + file;
         if (location)
