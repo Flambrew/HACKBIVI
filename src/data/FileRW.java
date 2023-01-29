@@ -32,7 +32,8 @@ public class FileRW {
 
     public static String transReads() {
         try {
-            return Files.readString(Paths.get(activeFile));
+            String out = Files.readString(Paths.get(activeFile));
+            return out;
         } catch (IOException e) {
             return null;
         }

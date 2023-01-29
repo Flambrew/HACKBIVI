@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import src.graphics.Graphics;
+import src.routing.City;
 
 public class InputParser {
     public static void parse(String in) {
@@ -36,10 +37,11 @@ public class InputParser {
                 try {
                     if (command.size() == 3)
                         runMakeLoc(command.get(0), options.contains("v"), options.contains("f"),
-                                Double.parseDouble(command.get(2)), Double.parseDouble(command.get(3)));
+                                Double.parseDouble(command.get(1)), Double.parseDouble(command.get(2)));
                     else
                         log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     log("Command \"%s\" unrecognized.", in);
                 }
             } else if (suffix.equals("con")) {
@@ -172,7 +174,7 @@ public class InputParser {
 
     public static void runMakeLoc(String name, boolean verbose, boolean force, double x, double y) {
         String file = FileRW.transReads();
-        if (file.matches("[^]*\\$" + name.toLowerCase() + ":[0-9.]+[0-9.]+\n[^]*")) {
+        if (file.matches(".*\\$" + name.toLowerCase() + ":[0-9.]+,[0-9.]+\\n.*")) {
             if (force) {
                 FileRW.transBGones("$" + name.toLowerCase());
                 FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
@@ -190,7 +192,7 @@ public class InputParser {
 
     public static void runMakeCon(String locationA, String locationB, boolean verbose) {
         String file = FileRW.transReads();
-        if (file.matches("[^]*\\$" + locationA.toLowerCase() + ":" + locationB.toLowerCase() + "\n[^]*")) {
+        if (file.matches(".*\\$" + locationA.toLowerCase() + ":" + locationB.toLowerCase() + "\n.*")) {
             Graphics.log("Connection Exists");
         } else {
             FileRW.transAdds("#%s:%s", locationA.toLowerCase(), locationB.toLowerCase());
@@ -220,6 +222,16 @@ public class InputParser {
     public static void runFind(String mapName, String start, boolean ignore, boolean home,
             String... destinations) {
         String file = FileRW.transReads();
+        ArrayList<City> cities = new ArrayList<>();
+
+        for (String str : file.split("\n")) {
+            if (str.charAt(0) == '$') {
+                cities.add(new City(mapName));
+            }
+        }
+
+
+
     }
 
     public static void runList(String mapName, boolean name, boolean location, boolean connection) {
