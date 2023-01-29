@@ -165,6 +165,8 @@ public class InputParser {
     }
 
     public static void runMakeMap(String name, boolean verbose, boolean set) {
+        FileRW.transWrites(name);
+        
         log("run: create map %s, verbose %s, set active: %s", name, verbose, set);
     }
 
