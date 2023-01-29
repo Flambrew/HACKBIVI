@@ -206,7 +206,8 @@ public class InputParser {
     public static void runRMcon(String locationA, String locationB, boolean verbose) {
         FileRW.transBGones("#" + locationA + "-" + locationB);
         if (verbose)
-            GraphicsManager.log("(From map: %s) Connection removed: %s-%s", FileRW.getActiveFile(), locationA, locationB);
+            GraphicsManager.log("(From map: %s) Connection removed: %s-%s", FileRW.getActiveFile(), locationA,
+                    locationB);
     }
 
     public static void runFind(String mapName, String start, String destination) {
