@@ -27,21 +27,26 @@ public class GraphicsManager extends JFrame {
     };
 
     public GraphicsManager() {
-        super("Terminal Window");
+        super("ARG");
         setSize(960, 550);
         setLocation(0, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
+    
         
         textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         JScrollPane scrollPane = new JScrollPane(textArea);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
-        textArea.setBackground(Color.DARK_GRAY);
+        textArea.setBackground(new Color(32, 37, 49));
         textArea.setForeground(Color.WHITE);
+
+        
+        getContentPane().setBackground(Color.BLUE);
+        setBackground(Color.BLUE);
 
         // info button
         JPanel buttonPanel = new JPanel();
@@ -56,6 +61,7 @@ public class GraphicsManager extends JFrame {
         buttonPanel.add(infoButton);
         buttonPanel.add(Box.createVerticalGlue());
         add(buttonPanel, BorderLayout.EAST);
+        buttonPanel.setBackground(new Color(38, 44, 59));
         infoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (infoBox == null) {
@@ -109,7 +115,7 @@ public class GraphicsManager extends JFrame {
 
     public static void info() {
         
-        infoBox = new JFrame("INFO");
+        infoBox = new JFrame("Instruction Manual For ARG");
         infoBox.setSize(960, 550);
         infoBox.setLocation(950, 300);
         infoBox.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -117,13 +123,14 @@ public class GraphicsManager extends JFrame {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BorderLayout());
         infoBox.add(infoPanel);
+        
 
         JTextArea textAreaInfo = new JTextArea();
         textAreaInfo.setEditable(false);
         textAreaInfo.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         JScrollPane scrollPane = new JScrollPane(textAreaInfo);
         infoPanel.add(scrollPane, BorderLayout.CENTER);
-        textAreaInfo.setBackground(Color.DARK_GRAY);
+        textAreaInfo.setBackground(new Color(38, 44, 59));
         textAreaInfo.setForeground(Color.WHITE);
         textAreaInfo.append("Hello. I want to go to sleep. My name is john, clemons. I live on 4956 Albacurque new mexico...." + "\n");
 
@@ -149,7 +156,6 @@ public class GraphicsManager extends JFrame {
     public static void main(String[] args) {
         GraphicsManager window = new GraphicsManager();
         window.setVisible(true);
-        //info();
     }
     
 }
