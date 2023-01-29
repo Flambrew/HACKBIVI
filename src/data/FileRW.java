@@ -12,7 +12,11 @@ public class FileRW {
     }
 
     public static void setActiveFile(String activeFile) {
-        FileRW.activeFile = activeFile.substring(activeFile.length() - 4).equals(".map") ? activeFile : activeFile + ".map";
+        try {
+            FileRW.activeFile = activeFile.substring(activeFile.length() - 4).equals(".map") ? activeFile : activeFile + ".map";
+        } catch (Exception e) {
+            FileRW.activeFile = activeFile + ".map";
+        }
     }
 
     public static void transWrites(String name) {
