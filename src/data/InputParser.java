@@ -34,9 +34,9 @@ public class InputParser {
                 }
                 command.removeIf(s -> s.matches("-.*"));
                 try {
-                    if (command.size() == 4)
+                    if (command.size() == 3)
                         runMakeLoc(command.get(0), options.contains("v"), options.contains("f"),
-                                command.get(0), Integer.parseInt(command.get(2)), Integer.parseInt(command.get(3)));
+                                Double.parseDouble(command.get(2)), Double.parseDouble(command.get(3)));
                     else
                         log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
@@ -159,22 +159,18 @@ public class InputParser {
     }
 
     public static void runMakeMap(String name, boolean verbose, boolean set) {
-
         FileRW.transWrites(name);
         if (set)
             FileRW.setActiveFile(name);
-
         if (verbose)
             if (set)
                 Graphics.log("Map created: %s, set as active map", name);
             else
                 Graphics.log("Map created: %s", name);
-
     }
 
-    public static void runMakeLoc(String name, boolean verbose, boolean force, String abbreviation, int x, int y) {
-        log("run: create location %s%s at (%d, %d), verbose: %s, force: %s", name,
-                abbreviation == null ? "" : " " + abbreviation, x, y, verbose, force);
+    public static void runMakeLoc(String name, boolean verbose, boolean force, double x, double y) {
+        FileRW.transAdds("$%s:%.2f,%.2f", name, x, y); // todo CURRENT ACTIVE FILE
     }
 
     public static void runMakeCon(String mapName, String locationA, String locationB, boolean verbose, boolean force) {
