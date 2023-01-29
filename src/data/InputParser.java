@@ -51,9 +51,8 @@ public class InputParser {
                 }
                 command.removeIf(s -> s.matches("-.*"));
                 try {
-                    if (command.size() == 3)
-                        runMakeCon(command.get(0), command.get(1), command.get(2), options.contains("v"),
-                                options.contains("s"));
+                    if (command.size() == 2)
+                        runMakeCon(command.get(0), command.get(1), options.contains("v"));
                     else
                         log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
@@ -177,17 +176,27 @@ public class InputParser {
             if (force) {
                 FileRW.transBGones("$" + name.toLowerCase());
                 FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
-                Graphics.log("(Overwrite) Created new location %s at (%.2f, %.2f)", name, x, y);
+                if (verbose)
+                    Graphics.log("(Overwrite) Created new location %s at (%.2f, %.2f)", name, x, y);
             } else {
                 Graphics.log("Command: \"make loc\" failed (could not overwrite existing location)");
             }
-        } else
+        } else {
             FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
-            Graphics.log("Created new location %s at (%.2f, %.2f)", name, x, y);
+            if (verbose)
+                Graphics.log("Created new location %s at (%.2f, %.2f)", name, x, y);
+        }
     }
 
-    public static void runMakeCon(String mapName, String locationA, String locationB, boolean verbose, boolean force) {
-        log("guh");
+    public static void runMakeCon(String locationA, String locationB, boolean verbose) {
+        String file = FileRW.transReads();
+        if (file.matches("[^]*\\$" + locationA.toLowerCase() + ":" + locationB.toLowerCase() + "\n[^]*")) {
+            Graphics.log("Connection Exists");
+        } else {
+            FileRW.transAdds("#%s:%s", locationA.toLowerCase(), locationB.toLowerCase());
+            if (verbose)
+                Graphics.log("Created new connection: %s - %s", locationA, locationB);
+        }
     }
 
     public static void runRMmap(String name, boolean verbose) {
