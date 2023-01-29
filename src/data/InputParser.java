@@ -145,6 +145,7 @@ public class InputParser {
             Graphics.log("Command \"%s\" unrecognized.", head);
     }
 
+    // ignore how atrocious this method looks, i just learned the basics of lambdas and im practicing their use, im not making this the norm
     private static String validateOptions(ArrayList<String> command, String[] fullOptions, String options) {
         String dash = command.stream().filter(s -> s.matches("-[^-].*")).map(s -> s.substring(1))
                 .collect(Collectors.joining());
