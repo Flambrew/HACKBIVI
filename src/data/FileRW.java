@@ -4,10 +4,6 @@ import java.io.*;
 
 public class FileRW {
 
-    // private String fName = "Map.txt";
-    // private String directory = System.getProperty("user.home");
-    // private String absolutePath = directory + File.separator + fName;
-
     private static String activeFile;
     File dir = new File("C:\\Users\\camde\\OneDrive\\Desktop\\Hack BI\\HACKBIVI\\maps");
 
@@ -16,13 +12,12 @@ public class FileRW {
     }
 
     public static void setActiveFile(String activeFile) {
-        FileRW.activeFile = activeFile;
+        FileRW.activeFile = activeFile.substring(activeFile.length() - 4).equals(".map") ? activeFile : activeFile + ".map";
     }
 
     public static void transWrites(String name) {
-
         try {
-            FileWriter fw = new FileWriter(name + ".txt");
+            FileWriter fw = new FileWriter(name + ".map");
             fw.close();
         } catch (IOException e) {
         }
@@ -40,7 +35,7 @@ public class FileRW {
                 str_data += strLine + "\n";
             }
             br.close();
-            return str_data.substring(0, str_data.length() - 2); 
+            return str_data.substring(0, str_data.length() - 5); 
         } catch (IOException e) {
             return null;
         }
@@ -75,24 +70,12 @@ public class FileRW {
     }
 
     public static void transKill(String name) {
-        File death = new File(name + ".txt");
+        File death = new File(name + ".map");
 
         if (death.delete()) {
             System.out.println("Deleted the file: " + death.getName());
         } else {
             System.out.println("Failed to delete the file.");
-        }
-    }
-
-    public static void transSummaries() {
-        String l;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("Map.txt"));
-            while ((l = br.readLine()) != null) {
-                System.out.println(l);
-            }
-            br.close();
-        } catch (IOException e) {
         }
     }
 }

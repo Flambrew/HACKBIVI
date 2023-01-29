@@ -117,8 +117,8 @@ public class InputParser {
                 return;
             }
             command.removeIf(s -> s.matches("-.*"));
-            if (command.size() == 1)
-                runList(command.get(0), options.contains("n"), options.contains("l"), options.contains("c"));
+            if (command.size() == 0)
+                runList(options.contains("n"), options.contains("l"), options.contains("c"));
             else
                 Graphics.log("Command \"%s\" unrecognized.", in);
         } else if (head.equals("set")) {
@@ -161,6 +161,8 @@ public class InputParser {
     }
 
     public static void runMakeLoc(String name, boolean verbose, boolean force, double x, double y) {
+        x *= 1000;
+        y *= 1000;
         String file = FileRW.transReads();
         if (file.matches(".*\\$" + name.toLowerCase() + ":[0-9.]+,[0-9.]+\\n.*")) {
             if (force) {
@@ -238,7 +240,7 @@ public class InputParser {
 
     }
 
-    public static void runList(String mapName, boolean name, boolean location, boolean connection) {
+    public static void runList(boolean name, boolean location, boolean connection) {
         String file = FileRW.transReads();
         if (name)
             file = FileRW.getActiveFile() + file;

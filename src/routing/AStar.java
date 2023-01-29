@@ -36,7 +36,7 @@ public class AStar {
 
     public static String path(City city) {
         String path = city.getShortestPath().stream().map(City::getName).collect(Collectors.joining(" -> "));
-        return path.isBlank() ? "%s : %s".format(city.getName(), city.getDistance())
-                : "%s -> %s : %s".format(path, city.getName(), city.getDistance()) + "\n";
+        return path.isBlank() ? String.format("%s : %s", city.getName(), city.getDistance())
+                : String.format("%s -> %s : %s", path, city.getName(), city.getDistance() / 1000.) + "\n";
     }
 }
