@@ -15,7 +15,7 @@ public class FileRW {
     }
     
     public static void setActiveFile(String activeFile) {
-        this.activeFile = activeFile;
+        FileRW.activeFile = activeFile;
     }
 
     public static void transWrites(String name) {
