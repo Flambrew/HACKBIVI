@@ -1,0 +1,3 @@
+$london:3.00,3.00
+$brighton:6.00,7.00
+#london:brighton
