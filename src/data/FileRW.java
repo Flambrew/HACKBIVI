@@ -8,7 +8,7 @@ public class FileRW {
     //private String directory = System.getProperty("user.home");
     //private String absolutePath = directory + File.separator + fName;
 
-    private String activeFile;
+    private static String activeFile;
     
     public String getActiveFile() {
         return activeFile;
