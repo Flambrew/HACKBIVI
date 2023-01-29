@@ -6,7 +6,7 @@ import src.data.InputParser;
 
 import java.awt.*;
 import java.awt.event.*;
-import src.data.InputParser;
+//import src.data.InputParser;
 
 public class Graphics extends JFrame {
 
