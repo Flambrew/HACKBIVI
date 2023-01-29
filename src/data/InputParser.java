@@ -111,13 +111,12 @@ public class InputParser {
             command.removeIf(s -> s.matches("-.*"));
             if (command.size() >= 3)
                 runFind(command.remove(0), command.remove(1), options.contains("i"), options.contains("h"),
-                        options.contains("r"),
                         command.toArray(String[]::new));
             else
                 Graphics.log("Command \"%s\" unrecognized.", in);
         } else if (head.equals("list")) {
             if ((options = validateOptions(command,
-                    new String[] { "name", "raw", "omit-locations", "omit-connections" }, "nrlc")) == "\0") {
+                    new String[] { "name", "omit-locations", "omit-connections" }, "nlc")) == "\0") {
                 options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                         .collect(Collectors.joining(", "));
                 Graphics.log("Options %s unrecognized.", options);
@@ -218,16 +217,14 @@ public class InputParser {
             Graphics.log("(From map: %s) Connection removed: %s-%s", FileRW.getActiveFile(), locationA, locationB);
     }
 
-    public static void runFind(String mapName, String start, boolean ignore, boolean home, boolean raw,
+    public static void runFind(String mapName, String start, boolean ignore, boolean home,
             String... destinations) {
-        log("run: find shortest route from %s, ignore order: %s, return home %s, raw: %s, destinations: %s",
-                start, ignore, home, raw, Arrays.deepToString(destinations));
+        String file = FileRW.transReads();
     }
 
     public static void runList(String mapName, boolean name, boolean location, boolean connection) {
         String file = FileRW.transReads();
-
-        if (name) 
+        if (name)
             file = FileRW.getActiveFile() + file;
         if (location)
             while (true)
