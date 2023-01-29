@@ -38,7 +38,7 @@ public class FileRW {
         try {
             BufferedReader br = new BufferedReader(new FileReader(activeFile));
             while (strLine != null) {
-                str_data += strLine;
+                str_data += strLine + "/n";
                 strLine = br.readLine();
             }
             br.close();
