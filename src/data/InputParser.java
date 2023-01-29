@@ -125,8 +125,7 @@ public class InputParser {
             }
             command.removeIf(s -> s.matches("-.*"));
             if (command.size() == 1)
-                runList(command.get(0), options.contains("n"), options.contains("r"), options.contains("l"),
-                        options.contains("c"));
+                runList(command.get(0), options.contains("n"), options.contains("l"), options.contains("c"));
             else
                 Graphics.log("Command \"%s\" unrecognized.", in);
         } else if (head.equals("set")) {
@@ -202,12 +201,12 @@ public class InputParser {
     }
 
     public static void runRMmap(String name, boolean verbose) {
-        FileRW.transBGones(name);
+        FileRW.transKill(name);
         if (verbose)
             Graphics.log("Map removed: %s", name);
     }
 
-    public static void runRMloc(String name, boolean verbose) { 
+    public static void runRMloc(String name, boolean verbose) {
         FileRW.transBGones("$" + name);
         if (verbose)
             Graphics.log("(From map: %s) Location removed: %s", FileRW.getActiveFile(), name);
@@ -225,9 +224,28 @@ public class InputParser {
                 start, ignore, home, raw, Arrays.deepToString(destinations));
     }
 
-    public static void runList(String mapName, boolean name, boolean raw, boolean location, boolean connection) {
-        log("run: list contents of map %s, name: %s, raw: %s, location: %s, connection: %s",
-                mapName.equals("") ? "active" : mapName, name, raw, location, connection);
+    public static void runList(String mapName, boolean name, boolean location, boolean connection) {
+        String file = FileRW.transReads();
+
+        if (name) 
+            file = FileRW.getActiveFile() + file;
+        if (location)
+            while (true)
+                try {
+                    file = file.substring(0, file.indexOf("$")) + file.substring(file.indexOf("\n", file.indexOf("$")));
+                } catch (Exception e) {
+                    break;
+                }
+        if (connection)
+            while (true)
+                try {
+                    file = file.substring(0, file.indexOf("#")) + file.substring(file.indexOf("\n", file.indexOf("#")));
+                } catch (Exception e) {
+                    break;
+                }
+        for (String str : file.split("\n")) {
+            Graphics.log(str);
+        }
     }
 
     public static void runSet(String mapName, boolean verbose) {
