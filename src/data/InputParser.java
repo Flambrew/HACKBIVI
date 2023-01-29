@@ -2,6 +2,7 @@ package src.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -13,131 +14,145 @@ public class InputParser {
     public static void parse(String in) {
         ArrayList<String> command = new ArrayList<>(Arrays.asList(in.toLowerCase().split(" ")));
         String head = command.remove(0), options;
-        if (head.equals("make")) {
-            String suffix = command.remove(0);
-            if (suffix.equals("map")) {
-                if ((options = validateOptions(command, new String[] { "verbose", "set" }, "vs")) == "\0") {
-                    options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
-                            .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
-                    return;
+        switch (head) {
+            case "make" -> {
+                String suffix = command.remove(0);
+                switch (suffix) {
+                    case "map" -> {
+                        if (Objects.equals(options = validateOptions(command, new String[]{"verbose", "set"}, "vs"), "\0")) {
+                            options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
+                                    .collect(Collectors.joining(", "));
+                            Graphics.log("Options %s unrecognized.", options);
+                            return;
+                        }
+                        command.removeIf(s -> s.matches("-.*"));
+                        if (command.size() == 1)
+                            runMakeMap(command.get(0), options.contains("v"), options.contains("s"));
+                        else
+                            Graphics.log("Command \"%s\" unrecognized.", in);
+                    }
+                    case "loc" -> {
+                        if (Objects.equals(options = validateOptions(command, new String[]{"verbose", "force"}, "vf"), "\0")) {
+                            options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
+                                    .collect(Collectors.joining(", "));
+                            Graphics.log("Options %s unrecognized.", options);
+                            return;
+                        }
+                        command.removeIf(s -> s.matches("-.*"));
+                        try {
+                            if (command.size() == 3)
+                                runMakeLoc(command.get(0), options.contains("v"), options.contains("f"),
+                                        Double.parseDouble(command.get(1)), Double.parseDouble(command.get(2)));
+                            else
+                                Graphics.log("Command \"%s\" unrecognized.", in);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Graphics.log("Command \"%s\" unrecognized.", in);
+                        }
+                    }
+                    case "con" -> {
+                        if (Objects.equals(options = validateOptions(command, new String[]{"verbose"}, "v"), "\0")) {
+                            options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
+                                    .collect(Collectors.joining(", "));
+                            Graphics.log("Options %s unrecognized.", options);
+                            return;
+                        }
+                        command.removeIf(s -> s.matches("-.*"));
+                        try {
+                            if (command.size() == 2)
+                                runMakeCon(command.get(0), command.get(1), options.contains("v"));
+                            else
+                                Graphics.log("Command \"%s\" unrecognized.", in);
+                        } catch (Exception e) {
+                            Graphics.log("Command \"%s\" unrecognized.", in);
+                        }
+                    }
+                    default -> Graphics.log("Command \"%s %s\" unrecognized.", head, suffix);
                 }
-                command.removeIf(s -> s.matches("-.*"));
-                if (command.size() == 1)
-                    runMakeMap(command.get(0), options.contains("v"), options.contains("s"));
-                else
-                    Graphics.log("Command \"%s\" unrecognized.", in);
-            } else if (suffix.equals("loc")) {
-                if ((options = validateOptions(command, new String[] { "verbose", "force" }, "vf")) == "\0") {
-                    options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
-                            .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
-                    return;
-                }
-                command.removeIf(s -> s.matches("-.*"));
-                try {
-                    if (command.size() == 3)
-                        runMakeLoc(command.get(0), options.contains("v"), options.contains("f"),
-                                Double.parseDouble(command.get(1)), Double.parseDouble(command.get(2)));
-                    else
-                        Graphics.log("Command \"%s\" unrecognized.", in);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Graphics.log("Command \"%s\" unrecognized.", in);
-                }
-            } else if (suffix.equals("con")) {
-                if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
-                    options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
-                            .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
-                    return;
-                }
-                command.removeIf(s -> s.matches("-.*"));
-                try {
-                    if (command.size() == 2)
-                        runMakeCon(command.get(0), command.get(1), options.contains("v"));
-                    else
-                        Graphics.log("Command \"%s\" unrecognized.", in);
-                } catch (Exception e) {
-                    Graphics.log("Command \"%s\" unrecognized.", in);
-                }
-            } else
-                Graphics.log("Command \"%s %s\" unrecognized.", head, suffix);
-        } else if (head.equals("rm")) {
-            String suffix = command.remove(0);
-            if (suffix.equals("map")) {
-                if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
-                    options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
-                            .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
-                    return;
-                }
-                command.removeIf(s -> s.matches("-.*"));
-                if (command.size() == 1)
-                    runRMmap(command.get(0), options.contains("v"));
-                else
-                    Graphics.log("Command \"%s\" unrecognized.", in);
-            } else if (suffix.equals("loc")) {
-                if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
-                    options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
-                            .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
-                    return;
-                }
-                command.removeIf(s -> s.matches("-.*"));
-                if (command.size() == 1)
-                    runRMloc(command.get(0), options.contains("v"));
-                else
-                    Graphics.log("Command \"%s\" unrecognized.", in);
-            } else if (suffix.equals("con")) {
-                if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
-                    options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
-                            .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
-                    return;
-                }
-                command.removeIf(s -> s.matches("-.*"));
-                if (command.size() == 2)
-                    runRMcon(command.get(0), command.get(1), options.contains("v"));
-                else
-                    Graphics.log("Command \"%s\" unrecognized.", in);
-            } else
-                Graphics.log("Command \"%s %s\" unrecognized.", head, suffix);
-        } else if (head.equals("find")) {
-            if (command.size() == 3)
-                runFind(command.remove(0), command.remove(0), command.remove(0));
-            else
-                Graphics.log("Command \"%s\" unrecognized.", in);
-        } else if (head.equals("list")) {
-            if ((options = validateOptions(command,
-                    new String[] { "name", "omit-locations", "omit-connections" }, "nlc")) == "\0") {
-                options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
-                        .collect(Collectors.joining(", "));
-                Graphics.log("Options %s unrecognized.", options);
-                return;
             }
-            command.removeIf(s -> s.matches("-.*"));
-            if (command.size() == 1)
-                runList(command.get(0), options.contains("n"), options.contains("l"), options.contains("c"));
-            else
-                Graphics.log("Command \"%s\" unrecognized.", in);
-        } else if (head.equals("set")) {
-            if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
-                options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
-                        .collect(Collectors.joining(", "));
-                Graphics.log("Options %s unrecognized.", options);
-                return;
+            case "rm" -> {
+                String suffix = command.remove(0);
+                switch (suffix) {
+                    case "map" -> {
+                        if (Objects.equals(options = validateOptions(command, new String[]{"verbose"}, "v"), "\0")) {
+                            options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
+                                    .collect(Collectors.joining(", "));
+                            Graphics.log("Options %s unrecognized.", options);
+                            return;
+                        }
+                        command.removeIf(s -> s.matches("-.*"));
+                        if (command.size() == 1)
+                            runRMmap(command.get(0), options.contains("v"));
+                        else
+                            Graphics.log("Command \"%s\" unrecognized.", in);
+                    }
+                    case "loc" -> {
+                        if (Objects.equals(options = validateOptions(command, new String[]{"verbose"}, "v"), "\0")) {
+                            options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
+                                    .collect(Collectors.joining(", "));
+                            Graphics.log("Options %s unrecognized.", options);
+                            return;
+                        }
+                        command.removeIf(s -> s.matches("-.*"));
+                        if (command.size() == 1)
+                            runRMloc(command.get(0), options.contains("v"));
+                        else
+                            Graphics.log("Command \"%s\" unrecognized.", in);
+                    }
+                    case "con" -> {
+                        if (Objects.equals(options = validateOptions(command, new String[]{"verbose"}, "v"), "\0")) {
+                            options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
+                                    .collect(Collectors.joining(", "));
+                            Graphics.log("Options %s unrecognized.", options);
+                            return;
+                        }
+                        command.removeIf(s -> s.matches("-.*"));
+                        if (command.size() == 2)
+                            runRMcon(command.get(0), command.get(1), options.contains("v"));
+                        else
+                            Graphics.log("Command \"%s\" unrecognized.", in);
+                    }
+                    default -> Graphics.log("Command \"%s %s\" unrecognized.", head, suffix);
+                }
             }
-            command.removeIf(s -> s.matches("-.*"));
-            if (command.size() == 1)
-                runSet(command.get(0), options.contains("v"));
-            else
-                Graphics.log("Command \"%s\" unrecognized.", in);
-        } else
-            Graphics.log("Command \"%s\" unrecognized.", head);
+            case "find" -> {
+                if (command.size() == 3)
+                    runFind(command.remove(0), command.remove(0), command.remove(0));
+                else
+                    Graphics.log("Command \"%s\" unrecognized.", in);
+            }
+            case "list" -> {
+                if (Objects.equals(options = validateOptions(command,
+                        new String[]{"name", "omit-locations", "omit-connections"}, "nlc"), "\0")) {
+                    options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
+                            .collect(Collectors.joining(", "));
+                    Graphics.log("Options %s unrecognized.", options);
+                    return;
+                }
+                command.removeIf(s -> s.matches("-.*"));
+                if (command.size() == 1)
+                    runList(options.contains("n"), options.contains("l"), options.contains("c"));
+                else
+                    Graphics.log("Command \"%s\" unrecognized.", in);
+            }
+            case "set" -> {
+                if (Objects.equals(options = validateOptions(command, new String[]{"verbose"}, "v"), "\0")) {
+                    options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
+                            .collect(Collectors.joining(", "));
+                    Graphics.log("Options %s unrecognized.", options);
+                    return;
+                }
+                command.removeIf(s -> s.matches("-.*"));
+                if (command.size() == 1)
+                    runSet(command.get(0), options.contains("v"));
+                else
+                    Graphics.log("Command \"%s\" unrecognized.", in);
+            }
+            default -> Graphics.log("Command \"%s\" unrecognized.", head);
+        }
     }
 
-    // ignore how atrocious this method looks, i just learned the basics of lambdas
+    // ignore how atrocious this method looks, I just learned the basics of lambdas
     // and im practicing their use, im not making this the norm
     private static String validateOptions(ArrayList<String> command, String[] fullOptions, String options) {
         String dash = command.stream().filter(s -> s.matches("-[^-].*")).map(s -> s.substring(1))
@@ -162,7 +177,8 @@ public class InputParser {
 
     public static void runMakeLoc(String name, boolean verbose, boolean force, double x, double y) {
         String file = FileRW.transReads();
-        if (file.matches(".*\\$" + name.toLowerCase() + ":[0-9.]+,[0-9.]+\\n.*")) {
+        assert file != null;
+        if (Objects.requireNonNull(file).matches(".*\\$" + name.toLowerCase() + ":[0-9.]+,[0-9.]+\\n.*")) {
             if (force) {
                 FileRW.transBGones("$" + name.toLowerCase());
                 FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
@@ -180,6 +196,7 @@ public class InputParser {
 
     public static void runMakeCon(String locationA, String locationB, boolean verbose) {
         String file = FileRW.transReads();
+        assert file != null;
         if (file.matches(".*\\$" + locationA.toLowerCase() + ":" + locationB.toLowerCase() + "\n.*")) {
             Graphics.log("Connection Exists");
         } else {
@@ -213,6 +230,7 @@ public class InputParser {
         ArrayList<String> names = new ArrayList<>();
 
         // make the locations
+        assert file != null;
         for (String str : file.split("\n"))
             if (str.charAt(0) == '$') {
                 cities.add(new City(str.substring(1, str.indexOf(":")),
@@ -238,13 +256,14 @@ public class InputParser {
 
     }
 
-    public static void runList(String mapName, boolean name, boolean location, boolean connection) {
+    public static void runList(boolean name, boolean location, boolean connection) {
         String file = FileRW.transReads();
         if (name)
             file = FileRW.getActiveFile() + file;
         if (location)
             while (true)
                 try {
+                    assert file != null;
                     file = file.substring(0, file.indexOf("$")) + file.substring(file.indexOf("\n", file.indexOf("$")));
                 } catch (Exception e) {
                     break;
@@ -252,10 +271,12 @@ public class InputParser {
         if (connection)
             while (true)
                 try {
+                    assert file != null;
                     file = file.substring(0, file.indexOf("#")) + file.substring(file.indexOf("\n", file.indexOf("#")));
                 } catch (Exception e) {
                     break;
                 }
+        assert file != null;
         for (String str : file.split("\n")) {
             Graphics.log(str);
         }
