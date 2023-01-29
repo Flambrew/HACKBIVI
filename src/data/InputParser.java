@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import src.graphics.Graphics;
+import src.graphics.GraphicsManager;
 import src.routing.AStar;
 import src.routing.City;
 
@@ -19,19 +19,19 @@ public class InputParser {
                 if ((options = validateOptions(command, new String[] { "verbose", "set" }, "vs")) == "\0") {
                     options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                             .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
+                    GraphicsManager.log("Options %s unrecognized.", options);
                     return;
                 }
                 command.removeIf(s -> s.matches("-.*"));
                 if (command.size() == 1)
                     runMakeMap(command.get(0), options.contains("v"), options.contains("s"));
                 else
-                    Graphics.log("Command \"%s\" unrecognized.", in);
+                    GraphicsManager.log("Command \"%s\" unrecognized.", in);
             } else if (suffix.equals("loc")) {
                 if ((options = validateOptions(command, new String[] { "verbose", "force" }, "vf")) == "\0") {
                     options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                             .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
+                    GraphicsManager.log("Options %s unrecognized.", options);
                     return;
                 }
                 command.removeIf(s -> s.matches("-.*"));
@@ -40,16 +40,16 @@ public class InputParser {
                         runMakeLoc(command.get(0), options.contains("v"), options.contains("f"),
                                 Double.parseDouble(command.get(1)), Double.parseDouble(command.get(2)));
                     else
-                        Graphics.log("Command \"%s\" unrecognized.", in);
+                        GraphicsManager.log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Graphics.log("Command \"%s\" unrecognized.", in);
+                    GraphicsManager.log("Command \"%s\" unrecognized.", in);
                 }
             } else if (suffix.equals("con")) {
                 if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
                     options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                             .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
+                    GraphicsManager.log("Options %s unrecognized.", options);
                     return;
                 }
                 command.removeIf(s -> s.matches("-.*"));
@@ -57,84 +57,84 @@ public class InputParser {
                     if (command.size() == 2)
                         runMakeCon(command.get(0), command.get(1), options.contains("v"));
                     else
-                        Graphics.log("Command \"%s\" unrecognized.", in);
+                        GraphicsManager.log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
-                    Graphics.log("Command \"%s\" unrecognized.", in);
+                    GraphicsManager.log("Command \"%s\" unrecognized.", in);
                 }
             } else
-                Graphics.log("Command \"%s %s\" unrecognized.", head, suffix);
+                GraphicsManager.log("Command \"%s %s\" unrecognized.", head, suffix);
         } else if (head.equals("rm")) {
             String suffix = command.remove(0);
             if (suffix.equals("map")) {
                 if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
                     options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                             .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
+                    GraphicsManager.log("Options %s unrecognized.", options);
                     return;
                 }
                 command.removeIf(s -> s.matches("-.*"));
                 if (command.size() == 1)
                     runRMmap(command.get(0), options.contains("v"));
                 else
-                    Graphics.log("Command \"%s\" unrecognized.", in);
+                    GraphicsManager.log("Command \"%s\" unrecognized.", in);
             } else if (suffix.equals("loc")) {
                 if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
                     options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                             .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
+                    GraphicsManager.log("Options %s unrecognized.", options);
                     return;
                 }
                 command.removeIf(s -> s.matches("-.*"));
                 if (command.size() == 1)
                     runRMloc(command.get(0), options.contains("v"));
                 else
-                    Graphics.log("Command \"%s\" unrecognized.", in);
+                    GraphicsManager.log("Command \"%s\" unrecognized.", in);
             } else if (suffix.equals("con")) {
                 if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
                     options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                             .collect(Collectors.joining(", "));
-                    Graphics.log("Options %s unrecognized.", options);
+                    GraphicsManager.log("Options %s unrecognized.", options);
                     return;
                 }
                 command.removeIf(s -> s.matches("-.*"));
                 if (command.size() == 2)
                     runRMcon(command.get(0), command.get(1), options.contains("v"));
                 else
-                    Graphics.log("Command \"%s\" unrecognized.", in);
+                    GraphicsManager.log("Command \"%s\" unrecognized.", in);
             } else
-                Graphics.log("Command \"%s %s\" unrecognized.", head, suffix);
+                GraphicsManager.log("Command \"%s %s\" unrecognized.", head, suffix);
         } else if (head.equals("find")) {
             if (command.size() == 3)
                 runFind(command.remove(0), command.remove(0), command.remove(0));
             else
-                Graphics.log("Command \"%s\" unrecognized.", in);
+                GraphicsManager.log("Command \"%s\" unrecognized.", in);
         } else if (head.equals("list")) {
             if ((options = validateOptions(command,
                     new String[] { "name", "omit-locations", "omit-connections" }, "nlc")) == "\0") {
                 options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                         .collect(Collectors.joining(", "));
-                Graphics.log("Options %s unrecognized.", options);
+                GraphicsManager.log("Options %s unrecognized.", options);
                 return;
             }
             command.removeIf(s -> s.matches("-.*"));
             if (command.size() == 0)
                 runList(options.contains("n"), options.contains("l"), options.contains("c"));
             else
-                Graphics.log("Command \"%s\" unrecognized.", in);
+                GraphicsManager.log("Command \"%s\" unrecognized.", in);
         } else if (head.equals("open")) {
             if ((options = validateOptions(command, new String[] { "verbose" }, "v")) == "\0") {
                 options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                         .collect(Collectors.joining(", "));
-                Graphics.log("Options %s unrecognized.", options);
+                GraphicsManager.log("Options %s unrecognized.", options);
                 return;
             }
             command.removeIf(s -> s.matches("-.*"));
             if (command.size() == 1)
                 runSet(command.get(0), options.contains("v"));
             else
-                Graphics.log("Command \"%s\" unrecognized.", in);
+                GraphicsManager.log("Command \"%s\" unrecognized.", in);
         } else
-            Graphics.log("Command \"%s\" unrecognized.", head);
+            GraphicsManager.log("Command \"%s\" unrecognized.", head);
     }
 
     // ignore how atrocious this method looks, i just learned the basics of lambdas
@@ -155,9 +155,9 @@ public class InputParser {
             FileRW.setActiveFile(name);
         if (verbose)
             if (set)
-                Graphics.log("Map created: %s, set as active map", name);
+                GraphicsManager.log("Map created: %s, set as active map", name);
             else
-                Graphics.log("Map created: %s", name);
+                GraphicsManager.log("Map created: %s", name);
     }
 
     public static void runMakeLoc(String name, boolean verbose, boolean force, double x, double y) {
@@ -169,44 +169,44 @@ public class InputParser {
                 FileRW.transBGones("$" + name.toLowerCase());
                 FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
                 if (verbose)
-                    Graphics.log("(Overwrite) Created new location %s at (%.2f, %.2f)", name, x, y);
+                    GraphicsManager.log("(Overwrite) Created new location %s at (%.2f, %.2f)", name, x, y);
             } else {
-                Graphics.log("Command: \"make loc\" failed (could not overwrite existing location)");
+                GraphicsManager.log("Command: \"make loc\" failed (could not overwrite existing location)");
             }
         } else {
             FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
             if (verbose)
-                Graphics.log("Created new location %s at (%.2f, %.2f)", name, x, y);
+                GraphicsManager.log("Created new location %s at (%.2f, %.2f)", name, x, y);
         }
     }
 
     public static void runMakeCon(String locationA, String locationB, boolean verbose) {
         String file = FileRW.transReads();
         if (file.matches(".*\\$" + locationA.toLowerCase() + ":" + locationB.toLowerCase() + "\n.*")) {
-            Graphics.log("Connection Exists");
+            GraphicsManager.log("Connection Exists");
         } else {
             FileRW.transAdds("#%s:%s", locationA.toLowerCase(), locationB.toLowerCase());
             if (verbose)
-                Graphics.log("Created new connection: %s - %s", locationA, locationB);
+                GraphicsManager.log("Created new connection: %s - %s", locationA, locationB);
         }
     }
 
     public static void runRMmap(String name, boolean verbose) {
         FileRW.transKill(name);
         if (verbose)
-            Graphics.log("Map removed: %s", name);
+            GraphicsManager.log("Map removed: %s", name);
     }
 
     public static void runRMloc(String name, boolean verbose) {
         FileRW.transBGones("$" + name);
         if (verbose)
-            Graphics.log("(From map: %s) Location removed: %s", FileRW.getActiveFile(), name);
+            GraphicsManager.log("(From map: %s) Location removed: %s", FileRW.getActiveFile(), name);
     }
 
     public static void runRMcon(String locationA, String locationB, boolean verbose) {
         FileRW.transBGones("#" + locationA + "-" + locationB);
         if (verbose)
-            Graphics.log("(From map: %s) Connection removed: %s-%s", FileRW.getActiveFile(), locationA, locationB);
+            GraphicsManager.log("(From map: %s) Connection removed: %s-%s", FileRW.getActiveFile(), locationA, locationB);
     }
 
     public static void runFind(String mapName, String start, String destination) {
@@ -236,7 +236,7 @@ public class InputParser {
 
         AStar.calculateShortestPath(cities.get(names.indexOf(start)));
 
-        Graphics.log("%s", AStar.path(cities.get(names.indexOf(destination))));
+        GraphicsManager.log("%s", AStar.path(cities.get(names.indexOf(destination))));
 
     }
 
@@ -259,13 +259,13 @@ public class InputParser {
                     break;
                 }
         for (String str : file.split("\n")) {
-            Graphics.log(str);
+            GraphicsManager.log(str);
         }
     }
 
     public static void runSet(String mapName, boolean verbose) {
         FileRW.setActiveFile(mapName);
         if (verbose)
-            Graphics.log("Map set: %s", mapName);
+            GraphicsManager.log("Map set: %s", mapName);
     }
 }
