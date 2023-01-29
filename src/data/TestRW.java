@@ -7,7 +7,10 @@ public class TestRW extends FileRW {
 
         TestRW test = new TestRW();
 
-        //test.transAdd();
-        test.transBGone();
+        //test.transAdds();
+        //test.transBGones();
+        //test.transSummaries();
+        //test.transReads();
+        //test.transWrites();
     }
 }

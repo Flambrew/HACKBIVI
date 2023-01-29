@@ -8,35 +8,31 @@ public class FileRW {
     private String directory = System.getProperty("user.home");
     private String absolutePath = directory + File.separator + fName;
 
-    public String transWrites() {
+    public static void transWrites(String name) {
 
         try {
-            FileWriter fw = new FileWriter(absolutePath);
-            String fContent = "guh";
-            fw.write(fContent);
+            FileWriter fw = new FileWriter(name + ".txt");
             fw.close();
-            return fContent;
         } catch (IOException e) {
-            return null;
         }
     }
 
-    public void transRead() {
+    public static void transReads() {
         
         try {
             
-            FileReader fr = new FileReader(absolutePath);
+            FileReader fr = new FileReader("Map.txt");
             int ch = fr.read();
-            while(ch != -1) {
+            if(ch != -1) {
                 System.out.print((char)ch);
-                fr.close();
             }
+            fr.close();
         } 
         catch (FileNotFoundException e) {} 
         catch (IOException e) {} 
     }
 
-    public void transAdd() {
+    public static void transAdds() {
         try {
             FileWriter fw = new FileWriter("Map.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -51,7 +47,7 @@ public class FileRW {
         }
     }
 
-    public void transBGone() throws IOException {
+    public static void transBGones() throws IOException {
 
         PrintWriter pw = new PrintWriter("newMap.txt");
         BufferedReader br1 = new BufferedReader(new FileReader("Map.txt")); //i used two bufferedreaders for this
@@ -89,14 +85,14 @@ public class FileRW {
         System.out.println("File operation performed successfully");
     }
 
-    public void transSummary() {
+    public static void transSummaries() {
         String l;
         try {
             BufferedReader br = new BufferedReader(new FileReader("Map.txt"));
             while ((l = br.readLine()) != null) {
                 System.out.println(l);
-                br.close();
             }
+            br.close();
         } catch (IOException e) {}
      }
 }

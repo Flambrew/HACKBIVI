@@ -154,8 +154,8 @@ public class InputParser {
         String dash = command.stream().filter(s -> s.matches("-[^-].*")).map(s -> s.substring(1))
                 .collect(Collectors.joining());
         String[] full = command.stream().filter(s -> s.matches("--.*")).map(s -> s.substring(2)).toArray(String[]::new);
-        dash = IntStream.range(0, full.length).filter(i -> Arrays.asList(fullOptions).contains(full[i]))
-                .mapToObj(i -> ((Character) options.charAt(i)).toString()).collect(Collectors.joining()).chars()
+        dash = (dash + IntStream.range(0, full.length).filter(i -> Arrays.asList(fullOptions).contains(full[i]))
+                .mapToObj(i -> ((Character) options.charAt(i)).toString()).collect(Collectors.joining())).chars()
                 .distinct().mapToObj(c -> ((Character) (char) c).toString()).collect(Collectors.joining());
         return dash.matches("[" + options + "]*") ? dash : "\0";
     }
