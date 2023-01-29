@@ -13,7 +13,6 @@ public class Graphics extends JFrame {
     private JTextField inputField;
     private static int linesToKeep = 30;
 
-
     public Graphics() {
         super("Terminal Window");
         setSize(960, 550);
@@ -28,6 +27,20 @@ public class Graphics extends JFrame {
         textArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         JScrollPane scrollPane = new JScrollPane(textArea);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // info button
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
+        buttonPanel.add(Box.createVerticalGlue());
+        JButton infoButton = new JButton("INFO");
+        infoButton.setPreferredSize(new Dimension(60, 30));
+        infoButton.setMinimumSize(new Dimension(60, 30));
+        infoButton.setMaximumSize(new Dimension(60, 30));
+        buttonPanel.add(infoButton);
+        buttonPanel.add(Box.createVerticalGlue());
+        add(buttonPanel, BorderLayout.EAST);
+        
+        
 
         textArea.setText("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
@@ -60,11 +73,16 @@ public class Graphics extends JFrame {
         mainPanel.add(inputField, BorderLayout.SOUTH);
 
         add(mainPanel);
-        //info();
+        info();
 
     }
     
-    /*
+
+
+
+
+
+
     public static void info() {
         JFrame infoBox = new JFrame("INFO");
         infoBox.setSize(960, 550);
@@ -73,9 +91,18 @@ public class Graphics extends JFrame {
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BorderLayout());
+        infoBox.setVisible(true);
 
     }
-    */
+
+
+
+
+
+
+
+
+
 
 
     public static void log(String act, Object... args) {

@@ -202,7 +202,7 @@ public class InputParser {
     }
 
     public static void runRMmap(String name, boolean verbose) {
-        FileRW.transBGones(name);
+        FileRW.transKill(name);
         if (verbose)
             Graphics.log("Map removed: %s", name);
     }
@@ -226,7 +226,21 @@ public class InputParser {
     }
 
     public static void runList(String mapName, boolean name, boolean raw, boolean location, boolean connection) {
-        log("run: list contents of map %s, name: %s, raw: %s, location: %s, connection: %s",
+        String file = FileRW.transReads();
+
+        /*if (location)
+            for (int i = 0; i < array.length; i++) {
+                
+            }
+            file = file.substring(0, file.indexOf(in)) + file.substring(file.indexOf(in)).substring(file.substring(file.indexOf(in)).indexOf("\n")) ;*/
+
+
+
+
+
+
+
+        Graphics.log("run: list contents of map %s, name: %s, raw: %s, location: %s, connection: %s",
                 mapName.equals("") ? "active" : mapName, name, raw, location, connection);
     }
 
