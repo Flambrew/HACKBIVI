@@ -8,7 +8,7 @@ public class FileRW {
     private String directory = System.getProperty("user.home");
     private String absolutePath = directory + File.separator + fName;
 
-    public String transWrites() {
+    public static String transWrites() {
 
         try {
             FileWriter fw = new FileWriter("yoMama.txt");
@@ -21,7 +21,7 @@ public class FileRW {
         }
     }
 
-    public void transReads() {
+    public static void transReads() {
         
         try {
             
@@ -36,7 +36,7 @@ public class FileRW {
         catch (IOException e) {} 
     }
 
-    public void transAdds() {
+    public static void transAdds() {
         try {
             FileWriter fw = new FileWriter("Map.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -51,7 +51,7 @@ public class FileRW {
         }
     }
 
-    public void transBGones() throws IOException {
+    public static void transBGones() throws IOException {
 
         PrintWriter pw = new PrintWriter("newMap.txt");
         BufferedReader br1 = new BufferedReader(new FileReader("Map.txt")); //i used two bufferedreaders for this
@@ -89,7 +89,7 @@ public class FileRW {
         System.out.println("File operation performed successfully");
     }
 
-    public void transSummaries() {
+    public static void transSummaries() {
         String l;
         try {
             BufferedReader br = new BufferedReader(new FileReader("Map.txt"));
