@@ -200,14 +200,19 @@ public class InputParser {
     }
 
     public static void runRMmap(String name, boolean verbose) {
+        FileRW.transBGones(name);
         log("run: delete map %s, verbose %s", name, verbose);
     }
 
-    public static void runRMloc(String name, boolean verbose) {
+    public static void runRMloc(String name, boolean verbose) { // "$" + name
+        name = "$" + name;
+        FileRW.transBGones(name);
         log("run: delete location %s, verbose %s", name, verbose);
     }
 
-    public static void runRMcon(String locationA, String locationB, boolean verbose) {
+    public static void runRMcon(String locationA, String locationB, boolean verbose) { // "#" + loca + "-" + locb
+        String name = "#" + locationA + "-" + locationB;
+        FileRW.transBGones(name);
         log("run: delete connection %s-%s, verbose %s", locationA, locationB, verbose);
     }
 
