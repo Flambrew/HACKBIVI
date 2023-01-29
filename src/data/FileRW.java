@@ -8,16 +8,12 @@ public class FileRW {
     private String directory = System.getProperty("user.home");
     private String absolutePath = directory + File.separator + fName;
 
-    public static String transWrites() {
+    public static void transWrites(String name) {
 
         try {
-            FileWriter fw = new FileWriter("yoMama.txt");
-            String fContent = "guh";
-            fw.write(fContent);
+            FileWriter fw = new FileWriter(name + ".txt");
             fw.close();
-            return fContent;
         } catch (IOException e) {
-            return null;
         }
     }
 
