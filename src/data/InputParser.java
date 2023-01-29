@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import src.graphics.Graphics;
+import src.routing.City;
 
 public class InputParser {
     public static void parse(String in) {
@@ -36,10 +37,11 @@ public class InputParser {
                 try {
                     if (command.size() == 3)
                         runMakeLoc(command.get(0), options.contains("v"), options.contains("f"),
-                                Double.parseDouble(command.get(2)), Double.parseDouble(command.get(3)));
+                                Double.parseDouble(command.get(1)), Double.parseDouble(command.get(2)));
                     else
                         log("Command \"%s\" unrecognized.", in);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     log("Command \"%s\" unrecognized.", in);
                 }
             } else if (suffix.equals("con")) {
@@ -111,13 +113,12 @@ public class InputParser {
             command.removeIf(s -> s.matches("-.*"));
             if (command.size() >= 3)
                 runFind(command.remove(0), command.remove(1), options.contains("i"), options.contains("h"),
-                        options.contains("r"),
                         command.toArray(String[]::new));
             else
                 Graphics.log("Command \"%s\" unrecognized.", in);
         } else if (head.equals("list")) {
             if ((options = validateOptions(command,
-                    new String[] { "name", "raw", "omit-locations", "omit-connections" }, "nrlc")) == "\0") {
+                    new String[] { "name", "omit-locations", "omit-connections" }, "nlc")) == "\0") {
                 options = command.stream().filter(s -> s.matches("-.*")).map(s -> "\"" + s + "\"")
                         .collect(Collectors.joining(", "));
                 Graphics.log("Options %s unrecognized.", options);
@@ -173,7 +174,7 @@ public class InputParser {
 
     public static void runMakeLoc(String name, boolean verbose, boolean force, double x, double y) {
         String file = FileRW.transReads();
-        if (file.matches("[^]*\\$" + name.toLowerCase() + ":[0-9.]+[0-9.]+\n[^]*")) {
+        if (file.matches(".*\\$" + name.toLowerCase() + ":[0-9.]+,[0-9.]+\\n.*")) {
             if (force) {
                 FileRW.transBGones("$" + name.toLowerCase());
                 FileRW.transAdds("$%s:%.2f,%.2f", name.toLowerCase(), x, y);
@@ -191,7 +192,7 @@ public class InputParser {
 
     public static void runMakeCon(String locationA, String locationB, boolean verbose) {
         String file = FileRW.transReads();
-        if (file.matches("[^]*\\$" + locationA.toLowerCase() + ":" + locationB.toLowerCase() + "\n[^]*")) {
+        if (file.matches(".*\\$" + locationA.toLowerCase() + ":" + locationB.toLowerCase() + "\n.*")) {
             Graphics.log("Connection Exists");
         } else {
             FileRW.transAdds("#%s:%s", locationA.toLowerCase(), locationB.toLowerCase());
@@ -218,16 +219,24 @@ public class InputParser {
             Graphics.log("(From map: %s) Connection removed: %s-%s", FileRW.getActiveFile(), locationA, locationB);
     }
 
-    public static void runFind(String mapName, String start, boolean ignore, boolean home, boolean raw,
+    public static void runFind(String mapName, String start, boolean ignore, boolean home,
             String... destinations) {
-        log("run: find shortest route from %s, ignore order: %s, return home %s, raw: %s, destinations: %s",
-                start, ignore, home, raw, Arrays.deepToString(destinations));
+        String file = FileRW.transReads();
+        ArrayList<City> cities = new ArrayList<>();
+
+        for (String str : file.split("\n")) {
+            if (str.charAt(0) == '$') {
+                cities.add(new City(mapName));
+            }
+        }
+
+
+
     }
 
     public static void runList(String mapName, boolean name, boolean location, boolean connection) {
         String file = FileRW.transReads();
-
-        if (name) 
+        if (name)
             file = FileRW.getActiveFile() + file;
         if (location)
             while (true)
