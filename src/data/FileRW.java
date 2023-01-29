@@ -1,19 +1,23 @@
 package src.data;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileRW {
 
-    //private String fName = "Map.txt";
-    //private String directory = System.getProperty("user.home");
-    //private String absolutePath = directory + File.separator + fName;
+    // private String fName = "Map.txt";
+    // private String directory = System.getProperty("user.home");
+    // private String absolutePath = directory + File.separator + fName;
 
     private static String activeFile;
-    
+    File dir = new File("C:\\Users\\camde\\OneDrive\\Desktop\\Hack BI\\HACKBIVI\\maps");
+
     public static String getActiveFile() {
         return activeFile;
     }
-    
+
     public static void setActiveFile(String activeFile) {
         FileRW.activeFile = activeFile;
     }
@@ -27,72 +31,40 @@ public class FileRW {
         }
     }
 
-    public static void transReads() {
-        
+    public static String transReads() {
         try {
-            
-            FileReader fr = new FileReader("Map.txt");
-            int ch = fr.read();
-            if(ch != -1) {
-                System.out.print((char)ch);
-            }
-            fr.close();
-        } 
-        catch (FileNotFoundException e) {} 
-        catch (IOException e) {} 
+            return Files.readString(Paths.get(activeFile));
+        } catch (IOException e) {
+            return null;
+        }
     }
 
-    public static void transAdds() {
+    public static void transAdds(String in, Object... args) {
+        in = String.format(in, args);
         try {
-            FileWriter fw = new FileWriter("Map.txt", true);
+            FileWriter fw = new FileWriter(activeFile, true);
             BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw); {
-
-                pw.println("check this out");
+            PrintWriter pw = new PrintWriter(bw);
+            {
+                pw.println(in);
             }
             pw.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void transBGones() throws IOException {
+    public static void transBGones(String in) {
+        String content = transReads();
 
-        PrintWriter pw = new PrintWriter("newMap.txt");
-        BufferedReader br1 = new BufferedReader(new FileReader("Map.txt")); //i used two bufferedreaders for this
-          
-        String l1 = br1.readLine(); //the l's mean lines
-          
-        while(l1 != null)
-        {
-            boolean flag = false;
+        String firstHalf = content.substring(0, content.indexOf(in));
 
-            BufferedReader br2 = new BufferedReader(new FileReader("delete.txt"));
-              
-            String l2 = br2.readLine();
+        String secondHalf = content.substring(content.indexOf(in));
 
-            while(l2 != null) {
+        String out = firstHalf + secondHalf.substring(secondHalf.indexOf("\n")) ;
 
-                if(l1.equals(l2)) {
-                    flag = true;
-                    break;
-                } 
-                l2 = br2.readLine();
-                br2.close();
-            }
-
-            if(!flag) 
-                pw.println(l1); 
-            l1 = br1.readLine();      
-        }
-          
-        pw.flush();
-
-        br1.close();
-        pw.close();
-          
-        System.out.println("File operation performed successfully");
+        transWrites(out);
+        
     }
 
     public static void transSummaries() {
@@ -103,6 +75,7 @@ public class FileRW {
                 System.out.println(l);
             }
             br.close();
-        } catch (IOException e) {}
-     }
+        } catch (IOException e) {
+        }
+    }
 }
