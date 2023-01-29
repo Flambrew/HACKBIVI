@@ -10,11 +10,8 @@ import java.awt.event.*;
 public class Graphics extends JFrame {
 
     private static JTextArea textArea;
-    private static JTextArea infoTextArea;
     private JTextField inputField;
     private int linesToKeep = 30;
-    private JFrame infoFrame;
-    private JButton infoButton;
 
 
     public Graphics() {
@@ -60,11 +57,14 @@ public class Graphics extends JFrame {
                 }
             }
         });
+        mainPanel.add(inputField, BorderLayout.SOUTH);
 
-        info();
+        add(mainPanel);
+        //info();
 
     }
     
+    /*
     public static void info() {
         JFrame infoBox = new JFrame("INFO");
         infoBox.setSize(960, 550);
@@ -75,7 +75,7 @@ public class Graphics extends JFrame {
         infoPanel.setLayout(new BorderLayout());
 
     }
-
+    */
 
 
     public static void log(String act, Object... args) {
@@ -86,7 +86,7 @@ public class Graphics extends JFrame {
     public static void main(String[] args) {
         Graphics window = new Graphics();
         window.setVisible(true);
-        info();
+        //info();
     }
     
 }
