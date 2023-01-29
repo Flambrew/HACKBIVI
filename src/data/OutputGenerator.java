@@ -1,4 +1,4 @@
-package src.routing;
+package src.data;
 
 public class OutputGenerator {
     public static String runMakeMap(String name, boolean verbose, boolean set) {
