@@ -6,6 +6,7 @@ import src.data.InputParser;
 
 import java.awt.*;
 import java.awt.event.*;
+import src.data.InputParser;
 
 public class Graphics extends JFrame {
 
@@ -60,7 +61,9 @@ public class Graphics extends JFrame {
         add(mainPanel);
     }
 
-    //public void log(String )
+    public static void log(String act, Object... args) {
+
+    }
 
     public static void main(String[] args) {
         Graphics window = new Graphics();
