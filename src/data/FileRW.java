@@ -31,12 +31,30 @@ public class FileRW {
     }
 
     public static String transReads() {
+        StringBuilder sb = new StringBuilder();
+        String strLine = "";
+        String str_data = "";
+
         try {
-            return Files.readString(Paths.get(activeFile));
+            BufferedReader br = new BufferedReader(new FileReader(activeFile));
+            while (strLine != null) {
+                str_data += strLine;
+                strLine = br.readLine();
+            }
+            br.close();
+            return str_data; 
         } catch (IOException e) {
             return null;
         }
     }
+
+    /*
+     * try {
+     * return Files.readString(Paths.get(activeFile));
+     * } catch (IOException e) {
+     * return null;
+     * }
+     */
 
     public static void transAdds(String in, Object... args) {
         in = String.format(in, args);
@@ -60,20 +78,20 @@ public class FileRW {
 
         String secondHalf = content.substring(content.indexOf(in));
 
-        String out = firstHalf + secondHalf.substring(secondHalf.indexOf("\n")) ;
+        String out = firstHalf + secondHalf.substring(secondHalf.indexOf("\n"));
 
         transWrites(out);
-        
+
     }
 
     public static void transKill(String name) {
         File death = new File(name + ".txt");
 
-        if (death.delete()) { 
+        if (death.delete()) {
             System.out.println("Deleted the file: " + death.getName());
         } else {
             System.out.println("Failed to delete the file.");
-        }  
+        }
     }
 
     public static void transSummaries() {
