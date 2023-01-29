@@ -10,7 +10,7 @@ public class City implements Comparable<City> {
     private final double x, y;
     private Integer distance = Integer.MAX_VALUE;
     private List<City> shortestPath = new LinkedList<>();
-    private java.util.Map<City, Integer> adjacentNodes = new HashMap<>();
+    private final java.util.Map<City, Integer> adjacentNodes = new HashMap<>();
 
     public void addAdjacentCity(City node, int weight) {
         adjacentNodes.put(node, weight);

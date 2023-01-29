@@ -10,8 +10,8 @@ import java.awt.event.*;
 public class Graphics extends JFrame {
 
     private static JTextArea textArea;
-    private JTextField inputField;
-    private static int linesToKeep = 30;
+    private final JTextField INPUT_FIELDS;
+    private final static int LINES_TO_KEEP = 30;
 
     public Graphics() {
         super("Terminal Window");
@@ -41,29 +41,25 @@ public class Graphics extends JFrame {
         buttonPanel.add(infoButton);
         buttonPanel.add(Box.createVerticalGlue());
         add(buttonPanel, BorderLayout.EAST);
-        infoButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-              info();
-            }
-          });
+        infoButton.addActionListener(e -> info());
         
 
         textArea.setText("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
-        inputField = new JTextField();
-        inputField.addKeyListener(new KeyAdapter() {
+        INPUT_FIELDS = new JTextField();
+        INPUT_FIELDS.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    String input = inputField.getText();
+                    String input = INPUT_FIELDS.getText();
                     textArea.append(input + "\n");
-                    inputField.setText("");
+                    INPUT_FIELDS.setText("");
 
                     // send to parser
                     InputParser.parse(input);
 
                     int lines = textArea.getLineCount();
-                    if (lines > linesToKeep) {
+                    if (lines > LINES_TO_KEEP) {
                         try {
                             int start = textArea.getLineStartOffset(0);
                             int end = textArea.getLineEndOffset(0);
@@ -76,7 +72,7 @@ public class Graphics extends JFrame {
                 }
             }
         });
-        mainPanel.add(inputField, BorderLayout.SOUTH);
+        mainPanel.add(INPUT_FIELDS, BorderLayout.SOUTH);
 
         add(mainPanel);
 
@@ -99,7 +95,7 @@ public class Graphics extends JFrame {
         infoPanel.add(scrollPane, BorderLayout.CENTER);
         textAreaInfo.setBackground(Color.DARK_GRAY);
         textAreaInfo.setForeground(Color.WHITE);
-        textAreaInfo.append("Hello. I want to go to sleep. My name is john, clemons. I live on 4956 Albacurque new mexico...." + "\n");
+        textAreaInfo.append("Hello. I want to go to sleep. My name is john, clemons. I live on 4956 Racquetball new mexico...." + "\n");
 
         infoBox.setVisible(true);
 
@@ -107,7 +103,7 @@ public class Graphics extends JFrame {
 
     public static void log(String act, Object... args) {
         int lines = textArea.getLineCount();
-        if (lines > linesToKeep) {
+        if (lines > LINES_TO_KEEP) {
             try {
                 int start = textArea.getLineStartOffset(0);
                 int end = textArea.getLineEndOffset(0);
